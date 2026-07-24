@@ -54,6 +54,20 @@ public class ConversationData
 
 public static class DialogueHelpers
 {
+    /**
+     * Loads csv data for conversations in the following format:
+     * 
+     * NpcName1, NpcName2, ... , PlayerName,,
+     * NpcLine1,, ... ,,,
+     * ,, ... , PlayerChoice1, PlayerChoice2, PlayerChoice3
+     * , NpcLine2, ... ,,,
+     * ,, ... , PlayerResponse,,
+     * ,, ... , PlayerChoice4, PlayerChoice5,
+     * ...
+     *
+     * The first row contains all npc names and then the player's name
+     * Following that there can either be 1 npc line per row or 1+ player lines per row (more than 1 means player picks an option)
+     */
     public static ConversationData LoadConversationFromCsvString(string csvString)
     {
         ConversationData conversation = new();
@@ -87,8 +101,10 @@ public static class DialogueHelpers
         return conversation;
     }
 
-    // Load the first row of csv entries as the characters present in the conversation.
-    // The last entry is assumed to be the player
+    /**
+     * Load the first row of csv entries as the characters present in the conversation.
+     * The last entry is assumed to be the player
+     */
     private static string[] LoadCharactersCsvRow(string csvRow)
     {
         List<string> csvFields = SplitCsvRow(csvRow);
@@ -116,7 +132,7 @@ public static class DialogueHelpers
         return characters.ToArray();
     }
 
-    // Load conversation entry from row given characters present
+    /** Load conversation entry from row given characters present */
     private static ConversationEntry LoadEntryFromCsvRow(string csvRow, string[] characters)
     {
         List<string> csvFields = SplitCsvRow(csvRow);

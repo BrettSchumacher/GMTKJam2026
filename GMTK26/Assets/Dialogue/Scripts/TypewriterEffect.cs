@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -29,6 +30,8 @@ public class TypewriterEffect : MonoBehaviour
 	Coroutine typewriterCoroutine;
 	Coroutine timeWaserCoroutine;
 
+	private Action OnCompletedCallback;
+
 	// Use this for initialization
 	void Start()
 	{
@@ -45,16 +48,26 @@ public class TypewriterEffect : MonoBehaviour
 		fromDM = false;
 	}
 
-    public void NewText(string newText)
+    public void NewText(string newText, Action completedCallback)
     {
+	    StopAllCoroutines();
 		_tmpProText = GetComponent<TMP_Text>()!;
 		currentText = ManualTextWrapping(newText, _tmpProText.font, _tmpProText.fontSize, _tmpProText.fontStyle);
+		OnCompletedCallback = completedCallback;
 		writer = currentText;
 		_tmpProText.text = "";
         // if (fromDM) { DialogueManager.newDialogueStarted = true; }
 		Keyboard.current.onTextInput += SkipText;
 		typewriterCoroutine = StartCoroutine("TypeWriterTMP");
 	}
+
+    private void FinishText()
+    {
+	    StopAllCoroutines();
+	    typewriterCoroutine = null;
+	    timeWaserCoroutine = null;
+	    OnCompletedCallback?.Invoke();
+    }
 
 	private void OnDestroy()
 	{
@@ -87,6 +100,7 @@ public class TypewriterEffect : MonoBehaviour
 			{
 				Keyboard.current.onTextInput -= SkipText;
 				_tmpProText.text = currentText;
+				FinishText();
 			}
 		}
 	}
@@ -150,6 +164,7 @@ public class TypewriterEffect : MonoBehaviour
 		Keyboard.current.onTextInput -= SkipText;
 
 		typewriterCoroutine = null;
+		FinishText();
 	}
 	IEnumerator TimeWaster()
 	{
@@ -159,6 +174,7 @@ public class TypewriterEffect : MonoBehaviour
 		// if (fromDM) { DialogueManager.newDialogueStarted = false; }
 
 		timeWaserCoroutine = null;
+		FinishText();
 	}
 
 

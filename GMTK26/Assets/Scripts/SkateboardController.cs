@@ -24,7 +24,7 @@ public class SkateboardController : MonoBehaviour
     bool isGrounded;
     Vector3 groundNormal = Vector3.up;
 
-    Rigidbody rb;
+    public Rigidbody rb;
     PlayerInput playerInput;
     InputAction movementAction;
 

@@ -41,12 +41,11 @@ public class SkateboardController : MonoBehaviour
         }
         if(movementAction.ReadValue<Vector2>().x > 0)
         {
-            rb.AddTorque(Vector3.up * torque);
+            rb.AddTorque(Vector3.up * torque * Time.fixedDeltaTime);
         }
         if(movementAction.ReadValue<Vector2>().x < 0)
         {
-            rb.AddTorque(Vector3.up * -torque);
+            rb.AddTorque(Vector3.up * -torque * Time.fixedDeltaTime);
         }
-
     }
 }

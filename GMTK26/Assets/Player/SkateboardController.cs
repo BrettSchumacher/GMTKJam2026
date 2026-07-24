@@ -17,6 +17,13 @@ public class SkateboardController : MonoBehaviour
     [Header("Feel")]
     public float grip = 8f;
 
+    [Header("Ground")]
+    public float groundCheckDistance = 0.6f;
+    public float groundAlignSpeed = 10f;
+
+    bool isGrounded;
+    Vector3 groundNormal = Vector3.up;
+
     Rigidbody rb;
     PlayerInput playerInput;
     InputAction movementAction;
@@ -41,6 +48,8 @@ public class SkateboardController : MonoBehaviour
         // For live tuning
         rb.maxLinearVelocity = maxSpeed;
 
+        CheckGround();
+
         Vector2 input = movementAction.ReadValue<Vector2>();
 
         rb.AddForce(transform.forward * input.y * acceleration, ForceMode.Acceleration);
@@ -57,5 +66,27 @@ public class SkateboardController : MonoBehaviour
         Vector3 targetVelocity = transform.forward * flatVelocity.magnitude;
         Vector3 carvedVelocity = Vector3.Lerp(flatVelocity, targetVelocity, grip * Time.fixedDeltaTime);
         rb.velocity = new Vector3(carvedVelocity.x, rb.velocity.y, carvedVelocity.z);
+
+        if (isGrounded)
+        {
+            Quaternion alignedRotation = Quaternion.FromToRotation(transform.up, groundNormal) * rb.rotation;
+            rb.MoveRotation(Quaternion.Slerp(rb.rotation, alignedRotation, groundAlignSpeed * Time.fixedDeltaTime));
+        }
+    }
+
+    void CheckGround()
+    {
+        Vector3 origin = transform.position + Vector3.up * 0.2f;
+
+        if (Physics.Raycast(origin, Vector3.down, out RaycastHit hitInfo, groundCheckDistance))
+        {
+            isGrounded = true;
+            groundNormal = hitInfo.normal;
+        }
+        else
+        {
+            isGrounded = false;
+            groundNormal = Vector3.up;
+        }
     }
 }

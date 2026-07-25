@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -68,6 +69,11 @@ public class DialogueManager : MonoBehaviour
     private Action currentConversationCompleteCallback;
     private int currentSelectedChoiceIndex = 0;
 
+    private PlayerInput inputComponent;
+    private InputAction advanceInputAction;
+    private InputAction upChoiceInputAction;
+    private InputAction downChoiceInputAction;
+
     void Awake()
     {
         if (Instance)
@@ -77,6 +83,68 @@ public class DialogueManager : MonoBehaviour
         }
 
         Instance = this;
+    }
+
+    private void OnEnable()
+    {
+        TryConfigureInput();
+    }
+    
+    private void OnDisable()
+    {
+        CleanupInputCallbacks();
+    }
+
+    void TryConfigureInput()
+    {
+        if (!PlayerManager.Instance)
+        {
+            return;
+        }
+
+        inputComponent = PlayerManager.Instance.InputComponent;
+
+        if (!inputComponent)
+        {
+            return;
+        }
+
+        advanceInputAction = inputComponent.actions.FindAction("AdvanceDialogue");
+        upChoiceInputAction = inputComponent.actions.FindAction("DialogueChoiceUp");
+        downChoiceInputAction = inputComponent.actions.FindAction("DialogueChoiceDown");
+
+        if (advanceInputAction != null)
+        {
+            advanceInputAction.performed += OnAdvanceInput;
+        }
+
+        if (upChoiceInputAction != null)
+        {
+            upChoiceInputAction.performed += OnChoiceUpInput;
+        }
+        
+        if (downChoiceInputAction != null)
+        {
+            downChoiceInputAction.performed += OnChoiceDownInput;
+        }
+    }
+
+    void CleanupInputCallbacks()
+    {
+        if (advanceInputAction!= null)
+        {
+            advanceInputAction.performed -= OnAdvanceInput;
+        }
+        
+        if (upChoiceInputAction != null)
+        {
+            upChoiceInputAction.performed -= OnChoiceUpInput;
+        }
+        
+        if (downChoiceInputAction != null)
+        {
+            downChoiceInputAction.performed -= OnChoiceDownInput;
+        }
     }
 
     public bool StartDialogue(ConversationData conversation, Action callback)
@@ -301,7 +369,7 @@ public class DialogueManager : MonoBehaviour
     }
 
     // On advance input either finish loading current text or move the conversation onwards
-    public void OnAdvanceInput()
+    public void OnAdvanceInput(InputAction.CallbackContext context = default)
     {
         switch (currentState)
         {
@@ -316,6 +384,16 @@ public class DialogueManager : MonoBehaviour
                 SkipText();
                 break;
         }
+    }
+
+    void OnChoiceUpInput(InputAction.CallbackContext context = default)
+    {
+        TrySetChoiceSelected(currentSelectedChoiceIndex - 1);
+    }
+    
+    void OnChoiceDownInput(InputAction.CallbackContext context = default)
+    {
+        TrySetChoiceSelected(currentSelectedChoiceIndex + 1);
     }
 
     void SkipText()

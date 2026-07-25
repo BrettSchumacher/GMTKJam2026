@@ -6,21 +6,43 @@ using TMPro;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager gameManager { get; private set; }
+
     public int countdownInMin = 60;
     private float countdownTimer = 60;
     [SerializeField] public TextMeshProUGUI countdownTimerText;
 
-    // Start is called before the first frame update
+    private void Awake()
+    {
+        // Setup Game Manager singleton 
+        if (gameManager != null && gameManager != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            gameManager = this;
+        }
+
+        DontDestroyOnLoad(this);
+    }
+
     void Start()
     {
         countdownTimer = (float) countdownInMin * 60;
     }
 
-    // Update is called once per frame
     void Update()
     {
         countdownTimer -= Time.deltaTime;
-        countdownTimerText.text = Mathf.CeilToInt(countdownTimer/60) + " min";
+        if (countdownTimer < 60f)
+        {
+            countdownTimerText.text = Mathf.CeilToInt(countdownTimer) + " s";
+        }
+        else
+        {
+            countdownTimerText.text = Mathf.CeilToInt(countdownTimer / 60) + " min";
+        }
 
         if (countdownTimer <= 0f)
         {

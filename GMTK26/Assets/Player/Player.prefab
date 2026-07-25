@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 401352137283932138}
   - component: {fileID: 1515169379613700478}
   - component: {fileID: 7848123597267581180}
+  - component: {fileID: 4715356215003418639}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -92,6 +93,20 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1404656668188025927}
   m_Enabled: 1
+--- !u!114 &4715356215003418639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1404656668188025927}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d98fbab438ba1424b89652ec2b6a2391, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shakeAmplitude: 0.01
+  shakeFrequency: 25
 --- !u!1 &8753314336676840298
 GameObject:
   m_ObjectHideFlags: 0
@@ -155,6 +170,12 @@ MonoBehaviour:
   tiltSpeed: 10
   maxAirPitch: 20
   airPitchVelocityRange: 10
+  maxTurnLean: 10
+  grindAttachRadius: 1
+  minGrindSpeed: 4
+  maxGrindSpeed: 14
+  grindReattachDelay: 0.3
+  cameraShake: {fileID: 4715356215003418639}
 --- !u!114 &7543909229963701920
 MonoBehaviour:
   m_ObjectHideFlags: 0

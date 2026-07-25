@@ -42,16 +42,34 @@ public class SkateboardController : MonoBehaviour
     public float maxAirPitch = 20f;
     public float airPitchVelocityRange = 10f;
 
+    [Header("Turn Lean")]
+    public float maxTurnLean = 10f;
+
+    [Header("Grinding")]
+    public float grindAttachRadius = 1f;
+    public float minGrindSpeed = 4f;
+    public float maxGrindSpeed = 14f;
+    public float grindReattachDelay = 0.3f;
+
+    public CameraShake cameraShake;
+
     CharacterController controller;
     PlayerInput playerInput;
     InputAction movementAction;
     InputAction jumpAction;
+    InputAction grindAction;
 
     Vector3 velocity;
     bool isGrounded;
     bool wasGrounded;
     bool jumpQueued;
     Vector3 groundNormal = Vector3.up;
+    float lastTurnAmount;
+    bool isGrinding;
+    GrindRail currentRail;
+    float railDistance;
+    float grindSpeed;
+    float reattachTimer;
 
     void Start()
     {
@@ -59,6 +77,7 @@ public class SkateboardController : MonoBehaviour
         playerInput = GetComponent<PlayerInput>();
         movementAction = playerInput.actions["Move"];
         jumpAction = playerInput.actions["Jump"];
+        grindAction = playerInput.actions["Grind"];
     }
 
     void Update()
@@ -71,27 +90,50 @@ public class SkateboardController : MonoBehaviour
             jumpQueued = true;
         }
 
-        HandleTurning(input);
-
-        if (isGrounded)
+        if (isGrinding)
         {
-            HandleGroundedMovement(input);
+            HandleGrinding();
         }
         else
         {
-            velocity.y += gravity * Time.deltaTime;
+            CheckGround();
+            HandleTurning(input);
+
+            if (isGrounded)
+            {
+                HandleGroundedMovement(input);
+            }
+            else
+            {
+                velocity.y += gravity * Time.deltaTime;
+                if (reattachTimer > 0f) reattachTimer -= Time.deltaTime;
+
+                if (grindAction.IsPressed())
+                {
+                    TryAttachToRail();
+                }
+            }
+
+            controller.Move(velocity * Time.deltaTime);
         }
 
         jumpQueued = false;
-        controller.Move(velocity * Time.deltaTime);
         UpdateVisualTilt();
+
+        if (cameraShake != null)
+        {
+            cameraShake.isShaking = isGrinding;
+        }
     }
 
     void HandleTurning(Vector2 input)
     {
         float speedFactor = Mathf.Clamp01(velocity.magnitude / maxSpeed);
         float turnFactor = Mathf.Lerp(minTurnSpeedFactor, 1f, speedFactor);
-        transform.Rotate(Vector3.up, input.x * turnSpeed * turnFactor * Time.deltaTime, Space.Self);
+        float turnAmount = input.x * turnFactor;
+        transform.Rotate(Vector3.up, turnAmount * turnSpeed * Time.deltaTime, Space.Self);
+
+        lastTurnAmount = turnAmount;
     }
 
     void HandleGroundedMovement(Vector2 input)
@@ -148,7 +190,11 @@ public class SkateboardController : MonoBehaviour
 
         Quaternion targetLocalTilt;
 
-        if (isGrounded)
+        if (isGrinding)
+        {
+            targetLocalTilt = Quaternion.Euler(0f, 90f, 0f);
+        }
+        else if (isGrounded)
         {
             Vector3 localNormal = transform.InverseTransformDirection(groundNormal);
             targetLocalTilt = Quaternion.FromToRotation(Vector3.up, localNormal);
@@ -159,11 +205,87 @@ public class SkateboardController : MonoBehaviour
             targetLocalTilt = Quaternion.Euler(-pitchT * maxAirPitch, 0f, 0f);
         }
 
+        if (!isGrinding)
+        {
+            Quaternion leanRotation = Quaternion.Euler(0f, 0f, -lastTurnAmount * maxTurnLean);
+            targetLocalTilt *= leanRotation;
+        }
+        
+
         bool justLanded = isGrounded && !wasGrounded;
         visualMesh.localRotation = justLanded
             ? targetLocalTilt
             : Quaternion.Slerp(visualMesh.localRotation, targetLocalTilt, tiltSpeed * Time.deltaTime);
 
         wasGrounded = isGrounded;
+    }
+
+    GrindRail FindNearbyRail(out Vector3 attachPoint, out float distanceAlongRail)
+    {
+        GrindRail closestRail = null;
+        attachPoint = Vector3.zero;
+        distanceAlongRail = 0f;
+        float closestDistance = grindAttachRadius;
+
+        foreach (GrindRail rail in GrindRail.All)
+        {
+            Vector3 point = rail.getClosestPoint(transform.position, out float dist);
+            float distance = Vector3.Distance(transform.position, point);
+            if (distance < closestDistance)
+            {
+                closestDistance = distance;
+                closestRail = rail;
+                attachPoint = point;
+                distanceAlongRail = dist;
+            }
+        }
+
+        return closestRail;
+    }
+
+    void TryAttachToRail()
+    {
+        if (reattachTimer > 0f) { return; }
+
+        GrindRail rail = FindNearbyRail(out Vector3 attachPoint, out float distanceAlongRail);
+        if (rail == null) { return; }
+
+        float speedAlongRail = Vector3.Dot(velocity, rail.direction);
+        grindSpeed = Mathf.Sign(speedAlongRail) * Mathf.Clamp(Mathf.Abs(speedAlongRail), minGrindSpeed, maxGrindSpeed);
+
+        isGrinding = true;
+        currentRail = rail;
+        railDistance = distanceAlongRail;
+    }
+
+    void HandleGrinding()
+    {
+        if (jumpQueued)
+        {
+            ExitGrind();
+            velocity.y += jumpForce;
+            return;
+        }
+
+        railDistance += grindSpeed * Time.deltaTime;
+
+        if (railDistance <= 0f || railDistance >= currentRail.length)
+        {
+            ExitGrind();
+            return;
+        }
+
+        Vector3 targetPosition = currentRail.startPosition + currentRail.direction * railDistance;
+        controller.Move(targetPosition - transform.position);
+        Vector3 facing = grindSpeed >= 0f ? currentRail.direction : -currentRail.direction;
+        transform.rotation = Quaternion.LookRotation(facing, Vector3.up);
+    }
+
+    void ExitGrind()
+    {
+        velocity = currentRail.direction * grindSpeed;
+        isGrinding = false;
+        currentRail = null;
+        reattachTimer = grindReattachDelay;
     }
 }

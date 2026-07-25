@@ -50,6 +50,7 @@ public class SkateboardController : MonoBehaviour
     public float minGrindSpeed = 4f;
     public float maxGrindSpeed = 14f;
     public float grindReattachDelay = 0.3f;
+    public float grindTurnSpeed = 8f;
 
     public CameraShake cameraShake;
 
@@ -82,8 +83,6 @@ public class SkateboardController : MonoBehaviour
 
     void Update()
     {
-        CheckGround();
-
         Vector2 input = movementAction.ReadValue<Vector2>();
         if (jumpAction.WasPressedThisFrame())
         {
@@ -211,7 +210,6 @@ public class SkateboardController : MonoBehaviour
             targetLocalTilt *= leanRotation;
         }
         
-
         bool justLanded = isGrounded && !wasGrounded;
         visualMesh.localRotation = justLanded
             ? targetLocalTilt
@@ -250,12 +248,16 @@ public class SkateboardController : MonoBehaviour
         GrindRail rail = FindNearbyRail(out Vector3 attachPoint, out float distanceAlongRail);
         if (rail == null) { return; }
 
-        float speedAlongRail = Vector3.Dot(velocity, rail.direction);
+        rail.getPointAtDistance(distanceAlongRail, out Vector3 tangent);
+        float speedAlongRail = Vector3.Dot(velocity, tangent);
         grindSpeed = Mathf.Sign(speedAlongRail) * Mathf.Clamp(Mathf.Abs(speedAlongRail), minGrindSpeed, maxGrindSpeed);
 
         isGrinding = true;
         currentRail = rail;
         railDistance = distanceAlongRail;
+
+        Vector3 facing = grindSpeed >= 0f ? tangent : -tangent;
+        transform.rotation = Quaternion.LookRotation(facing, Vector3.up);
     }
 
     void HandleGrinding()
@@ -269,21 +271,23 @@ public class SkateboardController : MonoBehaviour
 
         railDistance += grindSpeed * Time.deltaTime;
 
-        if (railDistance <= 0f || railDistance >= currentRail.length)
+        if (!currentRail.isClosedLoop && (railDistance <= 0f || railDistance >= currentRail.length))
         {
             ExitGrind();
             return;
         }
 
-        Vector3 targetPosition = currentRail.startPosition + currentRail.direction * railDistance;
+        Vector3 targetPosition = currentRail.getPointAtDistance(railDistance, out Vector3 tangent);
         controller.Move(targetPosition - transform.position);
-        Vector3 facing = grindSpeed >= 0f ? currentRail.direction : -currentRail.direction;
-        transform.rotation = Quaternion.LookRotation(facing, Vector3.up);
+        Vector3 facing = grindSpeed >= 0f ? tangent : -tangent;
+        Quaternion targetRotation = Quaternion.LookRotation(facing, Vector3.up);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, grindTurnSpeed * Time.deltaTime);
     }
 
     void ExitGrind()
     {
-        velocity = currentRail.direction * grindSpeed;
+        currentRail.getPointAtDistance(railDistance, out Vector3 tangent);
+        velocity = tangent * grindSpeed;
         isGrinding = false;
         currentRail = null;
         reattachTimer = grindReattachDelay;

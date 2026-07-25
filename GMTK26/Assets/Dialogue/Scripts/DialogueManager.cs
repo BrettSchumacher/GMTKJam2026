@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -25,7 +26,7 @@ public enum DialogueUIState
 public struct PlayerChoiceFields
 {
     public GameObject Root;
-    public Image SelectedIcon;
+    public Image[] SelectedIcons;
     public TypewriterEffect TextBox;
     public Button Button;
 
@@ -59,6 +60,7 @@ public class DialogueManager : MonoBehaviour
     public TypewriterEffect PlayerTextBox;
     public GameObject PlayerChoices;
     [FormerlySerializedAs("PlayerChoiceArrray")] public PlayerChoiceFields[] PlayerChoiceArray;
+    public bool UseDebugInputs = false;
 
     private DialogueUIState currentState = DialogueUIState.Disabled;
     private ConversationData currentConversation;
@@ -134,6 +136,18 @@ public class DialogueManager : MonoBehaviour
         PlayerText.SetActive(isPlayer && !isPlayerChoice);
         PlayerChoices.SetActive(isPlayerChoice);
 
+        List<TypewriterEffect> textsToReset = new(6) { NpcTextBox, PlayerTextBox };
+        textsToReset.AddRange(PlayerChoiceArray.Select(choice => choice.TextBox));
+
+        foreach (var typewriter in textsToReset)
+        {
+            TMP_Text textbox = typewriter.GetComponent<TMP_Text>();
+            if (textbox)
+            {
+                textbox.text = "";
+            }
+        }
+
         Sprite sprite = NpcDatabase.GetNpcSprite(currentEntry.CharacterName);
 
         if (isPlayer)
@@ -165,8 +179,12 @@ public class DialogueManager : MonoBehaviour
                 
                 PlayerChoiceArray[i].Root.SetActive(enableChoice);
                 PlayerChoiceArray[i].SetTextLoaded(false);
-                PlayerChoiceArray[i].SelectedIcon.color = isSelectedChoice ? Color.white : Color.clear;
                 PlayerChoiceArray[i].Button.onClick.AddListener(AdvanceConversation);
+
+                foreach (var icon in PlayerChoiceArray[i].SelectedIcons)
+                {
+                    icon.color = isSelectedChoice ? Color.white : Color.clear;
+                }
             }
         }
     }
@@ -249,16 +267,108 @@ public class DialogueManager : MonoBehaviour
     
     private void Update()
     {
-        // only poll input if we're waiting for user to advance from showing text
-        if (currentState != DialogueUIState.ShowingPlayerText && currentState != DialogueUIState.ShowingNpcText)
+        if (!UseDebugInputs)
+        {
+            return;
+        }
+        
+        CheckForDebugAdvanceInput();
+        CheckForDebugChoiceChangedInput();
+    }
+    
+    void CheckForDebugAdvanceInput()
+    {
+        if (Keyboard.current.enterKey.wasPressedThisFrame || 
+            Keyboard.current.spaceKey.wasPressedThisFrame || 
+            Mouse.current.leftButton.wasPressedThisFrame) // || Gamepad.current.buttonSouth.wasPressedThisFrame)
+        {
+            OnAdvanceInput();
+        }
+    }
+    
+    void CheckForDebugChoiceChangedInput()
+    {
+        if (Keyboard.current.wKey.wasPressedThisFrame || Keyboard.current.upArrowKey.wasPressedThisFrame)
+        {
+            TrySetChoiceSelected(currentSelectedChoiceIndex - 1);
+            return;
+        }
+
+        if (Keyboard.current.sKey.wasPressedThisFrame || Keyboard.current.downArrowKey.wasPressedThisFrame)
+        {
+            TrySetChoiceSelected(currentSelectedChoiceIndex + 1);
+        }
+    }
+
+    // On advance input either finish loading current text or move the conversation onwards
+    public void OnAdvanceInput()
+    {
+        switch (currentState)
+        {
+            case DialogueUIState.ShowingNpcText: // fall through
+            case DialogueUIState.ShowingPlayerText: // fall through
+            case DialogueUIState.ShowingPlayerChoices:
+                AdvanceConversation();
+                break;
+            case DialogueUIState.LoadingPlayerChoices: // fall through
+            case DialogueUIState.LoadingNpcText: // fall through
+            case DialogueUIState.LoadingPlayerText:
+                SkipText();
+                break;
+        }
+    }
+
+    void SkipText()
+    {
+        List<TypewriterEffect> textsToSkip = new();
+        switch (currentState)
+        {
+            case DialogueUIState.LoadingNpcText:
+                textsToSkip.Add(NpcTextBox);
+                break;
+            case DialogueUIState.LoadingPlayerText:
+                textsToSkip.Add(PlayerTextBox);
+                break;
+            case DialogueUIState.LoadingPlayerChoices:
+                foreach (var playerChoice in PlayerChoiceArray)
+                {
+                    textsToSkip.Add(playerChoice.TextBox);
+                }
+                break;
+        }
+
+        foreach (var textToSkip in textsToSkip)
+        {
+            if (!textToSkip.isActiveAndEnabled)
+            {
+                continue;
+            }
+            textToSkip.SkipText();
+        }
+    }
+
+    public void TrySetChoiceSelected(int index)
+    {
+        if (currentState != DialogueUIState.ShowingPlayerChoices &&
+            currentState != DialogueUIState.LoadingPlayerChoices)
         {
             return;
         }
 
-        if (Keyboard.current.enterKey.wasPressedThisFrame || Keyboard.current.spaceKey.wasPressedThisFrame) // ||
-            // Gamepad.current?.buttonSouth.wasPressedThisFrame)
+        int numChoices = currentConversation.ConversationEntries[currentConversationEntryIndex].Entries.Length;
+        if (index < 0 || index >= numChoices)
         {
-            AdvanceConversation();
+            return;
+        }
+
+        currentSelectedChoiceIndex = index;
+        for (int i = 0; i < PlayerChoiceArray.Length; ++i)
+        {
+            bool isSelectedChoice = currentSelectedChoiceIndex == i;
+            foreach (var icon in PlayerChoiceArray[i].SelectedIcons)
+            {
+                icon.color = isSelectedChoice ? Color.white : Color.clear;
+            }
         }
     }
 
@@ -302,6 +412,8 @@ public class DialogueManager : MonoBehaviour
         {
             PlayerChoiceArray[i].Button.onClick.RemoveListener(AdvanceConversation);
         }
+        
+        Debug.Log("Conversation Finished");
         
         // do some anim
         

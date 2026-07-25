@@ -51,13 +51,12 @@ public class TypewriterEffect : MonoBehaviour
     public void NewText(string newText, Action completedCallback)
     {
 	    StopAllCoroutines();
-		_tmpProText = GetComponent<TMP_Text>()!;
-		currentText = ManualTextWrapping(newText, _tmpProText.font, _tmpProText.fontSize, _tmpProText.fontStyle);
+		_tmpProText ??= GetComponent<TMP_Text>()!;
+		currentText = newText; // ManualTextWrapping(newText, _tmpProText.font, _tmpProText.fontSize, _tmpProText.fontStyle);
 		OnCompletedCallback = completedCallback;
 		writer = currentText;
 		_tmpProText.text = "";
         // if (fromDM) { DialogueManager.newDialogueStarted = true; }
-		Keyboard.current.onTextInput += SkipText;
 		typewriterCoroutine = StartCoroutine("TypeWriterTMP");
 	}
 
@@ -69,11 +68,6 @@ public class TypewriterEffect : MonoBehaviour
 	    OnCompletedCallback?.Invoke();
     }
 
-	private void OnDestroy()
-	{
-		Keyboard.current.onTextInput -= SkipText;
-	}
-
 	public void ChangeSoundSettings(AudioClip newSpeechSound, float newSpeechVolume, float newSpeechPitch, float newSpeechPitchRandomizationRange)
     {
 		speechSound = newSpeechSound;
@@ -82,7 +76,7 @@ public class TypewriterEffect : MonoBehaviour
 		speechPitchRandomizationRange = newSpeechPitchRandomizationRange;
 	}
 
-	public void SkipText(char ch)
+	public void SkipText(char ch = ' ')
     {
 		if (skippable)
 		{
@@ -161,14 +155,12 @@ public class TypewriterEffect : MonoBehaviour
 
 		yield return new WaitForSeconds(delayAfterEnd);
 		// if (fromDM) { DialogueManager.newDialogueStarted = false; }
-		Keyboard.current.onTextInput -= SkipText;
 
 		typewriterCoroutine = null;
 		FinishText();
 	}
 	IEnumerator TimeWaster()
 	{
-		Keyboard.current.onTextInput -= SkipText;
 		_tmpProText.text = currentText;
 		yield return new WaitForSeconds(delayAfterEnd);
 		// if (fromDM) { DialogueManager.newDialogueStarted = false; }

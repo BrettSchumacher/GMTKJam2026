@@ -12,6 +12,7 @@ public class PlayerManager : MonoBehaviour
 
     [HideInInspector] public SkateboardController SkateboardController;
     [HideInInspector] public PlayerInput InputComponent;
+    [HideInInspector] public List<ItemsSO> AcquiredWeddingItems;
 
     private void Awake()
     {

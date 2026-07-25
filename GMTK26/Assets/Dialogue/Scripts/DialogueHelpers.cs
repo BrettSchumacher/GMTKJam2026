@@ -55,6 +55,12 @@ public class ConversationData
     {
         return ConversationEntries.Count == 0;
     }
+
+    public void AppendConversation(ConversationData otherConversation)
+    {
+        Characters = Characters.Union(otherConversation.Characters).ToArray();
+        ConversationEntries.AddRange(otherConversation.ConversationEntries);
+    }
 }
 
 public static class DialogueHelpers

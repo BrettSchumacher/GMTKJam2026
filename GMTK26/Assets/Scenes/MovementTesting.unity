@@ -14082,10 +14082,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c074511627254f045859b5a83d362fb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TrickList:
-  - {fileID: 0}
-  inputBufferTime: 0.5
-  trickInputDelay: 0.08
+  inputBufferTime: 0.7
+  trickInputDelay: 0.25
+  trickInputTimeout: 0.9
+  maxButtonTapGap: 0.3
+  maxDirectionTapGap: 0.3
 --- !u!1 &1330858142
 GameObject:
   m_ObjectHideFlags: 0
@@ -16407,7 +16408,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh44408
+  m_Name: pb_Mesh69794
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2

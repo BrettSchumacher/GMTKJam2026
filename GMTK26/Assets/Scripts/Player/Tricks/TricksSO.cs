@@ -38,7 +38,7 @@ public class TrickLimits
 [Serializable] public struct MultiTapOverride
 {
     public string NameOverride;
-    public int PointOverride; // 0 or less = use PointValue * tap count
+    public int PointOverride;
 }
 [CreateAssetMenu(fileName = "NewTrick", menuName = "ScriptableObjects/Tricks", order = 1)]
 public class TricksSO : ScriptableObject
@@ -105,12 +105,17 @@ public class TricksSO : ScriptableObject
     }
 
 #if UNITY_EDITOR
-    private string lastAssetName;
-    private string lastTrickName;
+    [SerializeField, HideInInspector] private string lastAssetName;
+    [SerializeField, HideInInspector] private string lastTrickName;
 
     private void OnValidate()
     {
         string assetName = name;
+        if (string.IsNullOrEmpty(lastAssetName))
+        {
+            lastAssetName = assetName;
+            lastTrickName = "";
+        }
 
         bool assetNameChanged = lastAssetName != assetName;
         bool trickNameChanged = lastTrickName != TrickName;
@@ -177,6 +182,18 @@ public class TricksSO : ScriptableObject
 [CustomEditor(typeof(TricksSO))]
 public class TricksSOEditor : Editor
 {
+    private void OnEnable()
+    {
+        serializedObject.Update();
+        SerializedProperty trickName = serializedObject.FindProperty("TrickName");
+        if (trickName != null || string.IsNullOrEmpty(trickName.stringValue))
+        {
+            trickName.stringValue = target.name;
+        }
+        serializedObject.ApplyModifiedProperties();
+        AssetDatabase.SaveAssets();
+    }
+
     public override void OnInspectorGUI()
     {
         serializedObject.Update();
@@ -258,9 +275,7 @@ public class TricksSOEditor : Editor
             }
         }
 
-
         serializedObject.ApplyModifiedProperties();
-
         if (renameAsset && !string.IsNullOrWhiteSpace(trickName.stringValue) && oldTrickName != trickName.stringValue)
         {
             string path = AssetDatabase.GetAssetPath(target);
@@ -271,8 +286,6 @@ public class TricksSOEditor : Editor
             else
                 AssetDatabase.SaveAssets();
         }
-
-        TricksSO trick = (TricksSO)target;
     }
 }
 #endif

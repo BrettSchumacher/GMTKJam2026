@@ -119,6 +119,8 @@ GameObject:
   - component: {fileID: 5606826914998507487}
   - component: {fileID: 7543909229963701920}
   - component: {fileID: 7230945150000921965}
+  - component: {fileID: 8321524181569911935}
+  - component: {fileID: 2522421293504436800}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -232,6 +234,37 @@ CharacterController:
   m_SkinWidth: 0.02
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.2, z: 0}
+--- !u!114 &8321524181569911935
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8753314336676840298}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c074511627254f045859b5a83d362fb3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputBufferTime: 0.5
+  trickInputDelay: 0.08
+  trickInputTimeout: 0.9
+  maxButtonTapGap: 0.3
+  maxDirectionTapGap: 0.4
+--- !u!114 &2522421293504436800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8753314336676840298}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f944c315dbb87843b10db28380d2103, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SkateboardController: {fileID: 0}
+  InputComponent: {fileID: 0}
 --- !u!1001 &211318060446692874
 PrefabInstance:
   m_ObjectHideFlags: 0

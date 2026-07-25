@@ -48,8 +48,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cb30f565e2e2b6448e0ea4227e2324a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tradingSystem: {fileID: 3152982928357982287}
   countdownInMin: 60
   countdownTimerText: {fileID: 1948118292248608448}
+  interactHudObj: {fileID: 5520903016578244148}
+  interactText: {fileID: 9014552545570448109}
 --- !u!114 &3152982928357982287
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -173,6 +176,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5932103004159892549}
     m_Modifications:
+    - target: {fileID: 2009972948395155830, guid: cb6fb9101a89a4547a368529adb7c648, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2558456621416225786, guid: cb6fb9101a89a4547a368529adb7c648, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -281,12 +288,48 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI
       objectReference: {fileID: 0}
+    - target: {fileID: 5323989524493301198, guid: cb6fb9101a89a4547a368529adb7c648, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6773298079593589068, guid: cb6fb9101a89a4547a368529adb7c648, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6773298079593589068, guid: cb6fb9101a89a4547a368529adb7c648, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7620902170635535695, guid: cb6fb9101a89a4547a368529adb7c648, type: 3}
       propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7620902170635535695, guid: cb6fb9101a89a4547a368529adb7c648, type: 3}
       propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8626164745589915865, guid: cb6fb9101a89a4547a368529adb7c648, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8626164745589915865, guid: cb6fb9101a89a4547a368529adb7c648, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8626164745589915865, guid: cb6fb9101a89a4547a368529adb7c648, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8626164745589915865, guid: cb6fb9101a89a4547a368529adb7c648, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8626164745589915865, guid: cb6fb9101a89a4547a368529adb7c648, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8626164745589915865, guid: cb6fb9101a89a4547a368529adb7c648, type: 3}
+      propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -305,8 +348,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &5520903016578244148 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2009972948395155830, guid: cb6fb9101a89a4547a368529adb7c648, type: 3}
+  m_PrefabInstance: {fileID: 6303609793961246530}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &8429503786438436024 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2558456621416225786, guid: cb6fb9101a89a4547a368529adb7c648, type: 3}
   m_PrefabInstance: {fileID: 6303609793961246530}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &9014552545570448109 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3053709321115950511, guid: cb6fb9101a89a4547a368529adb7c648, type: 3}
+  m_PrefabInstance: {fileID: 6303609793961246530}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

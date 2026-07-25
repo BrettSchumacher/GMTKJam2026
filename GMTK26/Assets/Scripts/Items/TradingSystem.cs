@@ -34,6 +34,7 @@ public class TradingSystem : MonoBehaviour
 
     public void TradeItem(ItemsSO weddingItem)
     {
+        Debug.Log("Trade item: " + GetCurrentTradableItem() + " for " + weddingItemChecklist[weddingItem.ItemName].item.ItemName);
         currentTradableItemIndex++;
         // TODO: If we have an image of the current tradable item in the HUD, switch that HUD image here.
 

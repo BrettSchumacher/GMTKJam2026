@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5932103004159892549}
   - component: {fileID: 4352669798597091191}
+  - component: {fileID: 3152982928357982287}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -48,6 +49,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   countdownInMin: 60
   countdownTimerText: {fileID: 1948118292248608448}
+--- !u!114 &3152982928357982287
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 807085426159750046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5cf23819ff7e56d4ba87222dbba1b326, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tradableItemDatabase: {fileID: 11400000, guid: e9c96ba04ffa8e7499a04e7883d9273e, type: 2}
+  weddingItemList: {fileID: 11400000, guid: 78756615b67694b4982455bfb791f60f, type: 2}
 --- !u!1 &1766033737131950678
 GameObject:
   m_ObjectHideFlags: 0

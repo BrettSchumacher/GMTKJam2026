@@ -45,6 +45,7 @@ public class DialogueManager : MonoBehaviour
 {
     public static DialogueManager Instance;
 
+    public Canvas DialogueCanvas;
     public NpcDatabase NpcDatabase;
     public GameObject NpcPortrait;
     public Image NpcPortraitImage;
@@ -254,6 +255,11 @@ public class DialogueManager : MonoBehaviour
     {
         currentState = DialogueUIState.Opening;
         InputManager.Instance?.PushInputState(InputState.Dialogue);
+
+        if (DialogueCanvas)
+        {
+            DialogueCanvas.enabled = true;
+        }
         
         // Probably start coroutine here
 
@@ -480,6 +486,11 @@ public class DialogueManager : MonoBehaviour
         InputManager.Instance?.PopInputState();
         
         // do some anim
+
+        if (DialogueCanvas)
+        {
+            DialogueCanvas.enabled = false;
+        }
         
         currentState = DialogueUIState.Disabled;
     

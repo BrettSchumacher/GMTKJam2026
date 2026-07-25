@@ -32,7 +32,7 @@ public struct ConversationEntry
 
     public bool IsPlayerChoice()
     {
-        return IsPlayer && Entries.Length > 1;
+        return IsPlayer; // && Entries.Length > 1;
     }
 }
 

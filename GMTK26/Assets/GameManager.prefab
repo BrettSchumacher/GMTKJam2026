@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5932103004159892549}
   - component: {fileID: 4352669798597091191}
   - component: {fileID: 3152982928357982287}
+  - component: {fileID: 4164694638417080970}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -63,6 +64,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tradableItemDatabase: {fileID: 11400000, guid: e9c96ba04ffa8e7499a04e7883d9273e, type: 2}
   weddingItemList: {fileID: 11400000, guid: 78756615b67694b4982455bfb791f60f, type: 2}
+--- !u!114 &4164694638417080970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 807085426159750046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ffceb35360601544878dc924eafbe89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DefaultInputState: 0
+  InputStateToActionMapName:
+    _serializedList:
+    - Key: 0
+      Value: Gameplay
+    - Key: 1
+      Value: Dialogue
+    - Key: 3
+      Value: Menu
+    - Key: 2
+      Value: Dialogue
 --- !u!1 &1766033737131950678
 GameObject:
   m_ObjectHideFlags: 0

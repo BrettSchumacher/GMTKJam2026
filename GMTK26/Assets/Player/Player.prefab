@@ -140,15 +140,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 927606c180114ba4aa1b1e16123c065a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  acceleration: 40
-  maxSpeed: 20
+  acceleration: 25
+  maxSpeed: 10
   turnSpeed: 180
   minTurnSpeedFactor: 0.25
-  grip: 8
+  grip: 4
   drag: 2
   groundNormalMinY: 0.1
   groundCheckDistance: 0.3
-  jumpForce: 6
+  jumpForce: 8
   gravity: -20
   slideThresholdY: 0.9
   visualMesh: {fileID: 388569425629008353}

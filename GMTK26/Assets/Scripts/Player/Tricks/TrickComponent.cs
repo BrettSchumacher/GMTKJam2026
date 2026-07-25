@@ -7,7 +7,6 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 public enum InputDirection { DownLeft, Down, DownRight, Left, Neutral, Right, UpLeft, Up, UpRight }
-
 public enum ButtonAction { Grab, Flip, Grind, Ollie, None }
 
 public struct BufferedInput
@@ -15,6 +14,7 @@ public struct BufferedInput
     public InputDirection Direction;
     public ButtonAction Action;
     public float Time;
+    public float lastTapTime;
     public bool isDirection;
     public int TapCount;
 
@@ -23,6 +23,7 @@ public struct BufferedInput
         Direction = direction;
         Action = ButtonAction.None;
         Time = UnityEngine.Time.time;
+        lastTapTime = Time;
         isDirection = true;
         TapCount = 1;
     }
@@ -32,6 +33,7 @@ public struct BufferedInput
         Action = action;
         Direction = InputDirection.Neutral;
         Time = UnityEngine.Time.time;
+        lastTapTime = Time;
         isDirection = false;
         TapCount = 1;
     }
@@ -52,7 +54,8 @@ public class TrickComponent : MonoBehaviour
     [SerializeField] private float inputBufferTime = 0.7f;
     [SerializeField] private float trickInputDelay = 0.25f;
     [SerializeField] private float trickInputTimeout = 0.9f;
-    [SerializeField] private float maxTapGap = 0.3f;
+    [SerializeField] private float maxButtonTapGap = 0.3f;
+    [SerializeField] private float maxDirectionTapGap = 0.4f;
 
     private bool pendingTrickCheck;
     private float lastInputTime;
@@ -137,7 +140,7 @@ public class TrickComponent : MonoBehaviour
                 bool cameFromNeutral = wasAtNeutral;
                 bool hasLast = TryGetLastMatchingDirection(direction, out BufferedInput last);
 
-                if (cameFromNeutral && hasLast && Time.time - last.Time <= maxTapGap && last.TapCount < TrickLimits.MaxTrickButtonPress)
+                if (cameFromNeutral && hasLast && Time.time - last.Time <= maxButtonTapGap && last.TapCount < TrickLimits.MaxTrickButtonPress)
                 {
                     IncrementLastDirection(direction);
                 }
@@ -170,6 +173,12 @@ public class TrickComponent : MonoBehaviour
 
             BufferedInput updated = inputBuffer[i];
             updated.Time = Time.time;
+            //Timeout multidirection taps
+            if (updated.TapCount > 1 && Time.time - updated.lastTapTime > maxDirectionTapGap)
+            {
+                updated.lastTapTime = Time.time;
+                updated.TapCount = Mathf.Max(updated.TapCount - 1, 1);
+            }
             inputBuffer[i] = updated;
             return true;
         }
@@ -253,7 +262,7 @@ public class TrickComponent : MonoBehaviour
             firstInputTime = Time.time;
         }
 
-        if (TryGetLastMatchingAction(button, out BufferedInput last) && Time.time - last.Time <= maxTapGap)
+        if (TryGetLastMatchingAction(button, out BufferedInput last) && Time.time - last.Time <= maxButtonTapGap)
         {
             IncrementLastAction(button);
         }
@@ -315,7 +324,7 @@ public class TrickComponent : MonoBehaviour
                 foreach (TricksSO trick in TrickList)
                 {
                     if (trick != null && trick.AllowMultiTap && trick.Button == entry.Action)
-                        return maxTapGap;
+                        return maxButtonTapGap;
                 }
             }
 

@@ -18,8 +18,6 @@ public enum DialogueUIState
     ShowingNpcText,
     LoadingPlayerChoices,
     ShowingPlayerChoices,
-    LoadingPlayerText,
-    ShowingPlayerText,
     Closing
 }
 
@@ -29,7 +27,6 @@ public struct PlayerChoiceFields
     public GameObject Root;
     public Image[] SelectedIcons;
     public TypewriterEffect TextBox;
-    public Button Button;
 
     private bool TextLoaded;
 
@@ -57,8 +54,6 @@ public class DialogueManager : MonoBehaviour
     public TMP_Text PlayerName;
     public GameObject NpcTextRoot;
     public TypewriterEffect NpcTextBox;
-    public GameObject PlayerText;
-    public TypewriterEffect PlayerTextBox;
     public GameObject PlayerChoices;
     [FormerlySerializedAs("PlayerChoiceArrray")] public PlayerChoiceFields[] PlayerChoiceArray;
     public bool UseDebugInputs = false;
@@ -147,7 +142,7 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    public bool StartDialogue(ConversationData conversation, Action callback)
+    public bool StartDialogue(ConversationData conversation, Action callback = null)
     {
         if (conversation == null)
         {
@@ -201,10 +196,9 @@ public class DialogueManager : MonoBehaviour
         NpcPortrait.SetActive(!isPlayer);
         PlayerPortrait.SetActive(isPlayer);
         NpcTextRoot.SetActive(!isPlayer);
-        PlayerText.SetActive(isPlayer && !isPlayerChoice);
-        PlayerChoices.SetActive(isPlayerChoice);
+        PlayerChoices.SetActive(isPlayer);
 
-        List<TypewriterEffect> textsToReset = new(6) { NpcTextBox, PlayerTextBox };
+        List<TypewriterEffect> textsToReset = new(5) { NpcTextBox };
         textsToReset.AddRange(PlayerChoiceArray.Select(choice => choice.TextBox));
 
         foreach (var typewriter in textsToReset)
@@ -247,7 +241,6 @@ public class DialogueManager : MonoBehaviour
                 
                 PlayerChoiceArray[i].Root.SetActive(enableChoice);
                 PlayerChoiceArray[i].SetTextLoaded(false);
-                PlayerChoiceArray[i].Button.onClick.AddListener(AdvanceConversation);
 
                 foreach (var icon in PlayerChoiceArray[i].SelectedIcons)
                 {
@@ -260,6 +253,7 @@ public class DialogueManager : MonoBehaviour
     private void OpenDialogueUI()
     {
         currentState = DialogueUIState.Opening;
+        InputManager.Instance?.PushInputState(InputState.Dialogue);
         
         // Probably start coroutine here
 
@@ -293,11 +287,10 @@ public class DialogueManager : MonoBehaviour
 
         if (!currentEntry.IsPlayerChoice())
         {
-            TypewriterEffect activeTextBox = currentEntry.IsPlayer ? PlayerTextBox : NpcTextBox;
-            currentState = currentEntry.IsPlayer ? DialogueUIState.LoadingPlayerText : DialogueUIState.LoadingNpcText;
-            activeTextBox.NewText(currentEntry.Entries[0], () =>
+            currentState =  DialogueUIState.LoadingNpcText;
+            NpcTextBox.NewText(currentEntry.Entries[0], () =>
             {
-                currentState = currentEntry.IsPlayer ? DialogueUIState.ShowingPlayerText : DialogueUIState.ShowingNpcText;
+                currentState =  DialogueUIState.ShowingNpcText;
             });
             return;
         }
@@ -374,13 +367,11 @@ public class DialogueManager : MonoBehaviour
         switch (currentState)
         {
             case DialogueUIState.ShowingNpcText: // fall through
-            case DialogueUIState.ShowingPlayerText: // fall through
             case DialogueUIState.ShowingPlayerChoices:
                 AdvanceConversation();
                 break;
             case DialogueUIState.LoadingPlayerChoices: // fall through
             case DialogueUIState.LoadingNpcText: // fall through
-            case DialogueUIState.LoadingPlayerText:
                 SkipText();
                 break;
         }
@@ -403,9 +394,6 @@ public class DialogueManager : MonoBehaviour
         {
             case DialogueUIState.LoadingNpcText:
                 textsToSkip.Add(NpcTextBox);
-                break;
-            case DialogueUIState.LoadingPlayerText:
-                textsToSkip.Add(PlayerTextBox);
                 break;
             case DialogueUIState.LoadingPlayerChoices:
                 foreach (var playerChoice in PlayerChoiceArray)
@@ -454,7 +442,6 @@ public class DialogueManager : MonoBehaviour
     {
         DialogueUIState.ShowingNpcText,
         DialogueUIState.ShowingPlayerChoices,
-        DialogueUIState.ShowingPlayerText
     };
     
     private void AdvanceConversation()
@@ -486,12 +473,11 @@ public class DialogueManager : MonoBehaviour
     {
         currentState = DialogueUIState.Closing;
         
-        for (int i = 0; i < PlayerChoiceArray.Length; ++i)
-        {
-            PlayerChoiceArray[i].Button.onClick.RemoveListener(AdvanceConversation);
-        }
-        
         Debug.Log("Conversation Finished");
+        
+        currentConversationCompleteCallback?.Invoke();
+
+        InputManager.Instance?.PopInputState();
         
         // do some anim
         

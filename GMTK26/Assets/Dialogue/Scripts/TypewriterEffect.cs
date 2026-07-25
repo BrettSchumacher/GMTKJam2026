@@ -186,7 +186,7 @@ public class TypewriterEffect : MonoBehaviour
 
 		float styleSpacingAdjustment = (style & FontStyles.Bold) == FontStyles.Bold ? fontAsset.boldSpacing : 0;
 		float normalSpacingAdjustment = fontAsset.normalSpacingOffset;
-		float tempNewlineWidthLimit = forceNewlineWidth;
+		float tempNewlineWidthLimit = _tmpProText.rectTransform.rect.width - _tmpProText.margin.x - _tmpProText.margin.z; // forceNewlineWidth
 		float width = _tmpProText.margin.x + _tmpProText.margin.z;
 		bool skipCharacters = false;
 		string currentVal = "";

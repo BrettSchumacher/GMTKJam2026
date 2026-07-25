@@ -1783,6 +1783,7 @@ MonoBehaviour:
     - {fileID: 2740631072920337298}
     TextBox: {fileID: 4795087835497858181}
     Button: {fileID: 5624647641465144539}
+  UseDebugInputs: 0
 --- !u!1 &4277080880154604936
 GameObject:
   m_ObjectHideFlags: 0
@@ -2450,8 +2451,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3103730336396286320}
   m_HandleRect: {fileID: 3098623152048496036}
   m_Direction: 0
-  m_Value: 0
-  m_Size: 1
+  m_Value: 0.5
+  m_Size: 0.659381
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

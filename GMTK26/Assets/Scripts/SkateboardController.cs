@@ -21,17 +21,21 @@ public class SkateboardController : MonoBehaviour
     public float groundCheckDistance = 0.6f;
     public float groundAlignSpeed = 10f;
 
+    [Header("Jump")]
+    public float jumpForce = 6f;
+
     bool isGrounded;
+    bool jumpQueued;
     Vector3 groundNormal = Vector3.up;
 
     public Rigidbody rb;
     PlayerInput playerInput;
     InputAction movementAction;
+    InputAction jumpAction;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        rb.maxLinearVelocity = maxSpeed;
 
         InputSetup();
     }
@@ -41,13 +45,19 @@ public class SkateboardController : MonoBehaviour
         // Setup movement actions
         playerInput = GetComponent<PlayerInput>();
         movementAction = playerInput.actions["Move"];
+        jumpAction = playerInput.actions["Jump"];
+    }
+
+    void Update()
+    {
+        if (jumpAction.WasPressedThisFrame())
+        {
+            jumpQueued = true;
+        }
     }
 
     void FixedUpdate()
     {
-        // For live tuning
-        rb.maxLinearVelocity = maxSpeed;
-
         CheckGround();
 
         Vector2 input = movementAction.ReadValue<Vector2>();
@@ -65,7 +75,14 @@ public class SkateboardController : MonoBehaviour
         Vector3 flatVelocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
         Vector3 targetVelocity = transform.forward * flatVelocity.magnitude;
         Vector3 carvedVelocity = Vector3.Lerp(flatVelocity, targetVelocity, grip * Time.fixedDeltaTime);
+        carvedVelocity = Vector3.ClampMagnitude(carvedVelocity, maxSpeed);
         rb.velocity = new Vector3(carvedVelocity.x, rb.velocity.y, carvedVelocity.z);
+
+        if (isGrounded && jumpQueued)
+        {
+            rb.AddForce(Vector3.up * jumpForce, ForceMode.VelocityChange);
+        }
+        jumpQueued = false;
 
         if (isGrounded)
         {

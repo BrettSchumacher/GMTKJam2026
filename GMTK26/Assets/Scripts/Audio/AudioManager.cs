@@ -1,15 +1,20 @@
+using AYellowpaper.SerializedCollections;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public enum Sounds
+
+public enum MusicTracks
 {
     Menu,
     Opening,
     Background,
     Pause,
-    Ending,
+    Ending
+}
+public enum Sounds
+{
     Rolling,
     Ollie,
     Grind,
@@ -20,9 +25,15 @@ public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance;
 
+    private AudioSource MusicSource; 
+    public GameObject playerPrefab;
     public GameObject audioPrefab;
 
-    [SerializeField] public static Dictionary<Sounds, AudioClip[]> SoundDict;
+    [SerializedDictionary("Sound", "AudioClips")]
+    public SerializedDictionary<Sounds, AudioClip[]> SoundDict = new();
+
+    [SerializedDictionary("Music track", "AudioClip")]
+    public SerializedDictionary<MusicTracks, AudioClip> MusicTracks = new(); 
     void Awake()
     {
         if (Instance)
@@ -31,13 +42,51 @@ public class AudioManager : MonoBehaviour
             return;
         }
         Instance = this;
+        MusicSource = playerPrefab.GetComponent<AudioSource>();
     }
     private void OnDisable()
     {
         Instance = null;
     }
 
-    public static void PlayAudio(Sounds track, Vector3 playAt, Transform attachTo, float delay = 0f, float pitch = 1f, bool stopWhenDestroyed = false)
+    public static void PlayBackgroundMusic(MusicTracks track, float delay = 0f)
+    {
+        if (Instance == null)
+        {
+            Debug.LogError("No AudioManager instance found");
+            return;
+        }
+        if(Instance.MusicSource == null)
+        {
+            Debug.LogError("No music source set");
+            return;
+        }
+
+        AudioClip clip = null;
+        Instance.MusicTracks.TryGetValue(track, out clip);
+        if (clip == null)
+        {
+            Debug.LogError("Music track for " + track + " missing");
+            return;
+        }
+        if (Instance.MusicSource.isPlaying)
+        {
+            Instance.MusicSource.Stop();
+        }
+        Instance.MusicSource.clip = clip;
+        Instance.MusicSource.loop = true;
+
+        if (delay > 0f)
+        {
+            Instance.MusicSource.PlayDelayed(delay);
+        }
+        else
+        {
+            Instance.MusicSource.Play();
+        }
+    }
+
+    public static void PlayAudio(Sounds track, Vector3 playAt, Transform attachTo = null, float delay = 0f, float pitch = 1f, bool stopWhenDestroyed = false)
     {
         if (Instance == null)
         {
@@ -48,7 +97,7 @@ public class AudioManager : MonoBehaviour
         GameObject audio = Instantiate(Instance.audioPrefab, playAt, Quaternion.identity);
 
         AudioClip[] clips = null;
-        SoundDict.TryGetValue(track, out clips);
+        Instance.SoundDict.TryGetValue(track, out clips);
         if (clips == null)
         {
             Debug.LogError("AudioManager::PlayMusic - AudioClip missing for " + track);

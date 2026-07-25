@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4443227954932843290}
-  - component: {fileID: 9072807894850302999}
+  - component: {fileID: -8851573403880183230}
   m_Layer: 0
   m_Name: AudioManager
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &9072807894850302999
+--- !u!114 &-8851573403880183230
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -44,4 +44,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d73461ab1ceb62448d3310114571202, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerPrefab: {fileID: 8753314336676840298, guid: 5abf188f2af0c4fe9acdac50739a3c31, type: 3}
   audioPrefab: {fileID: 4695917535236391693, guid: 5b3e005a5f7bea14c819f625a2729630, type: 3}
+  SoundDict:
+    _serializedList:
+    - Key: 0
+      Value:
+      - {fileID: 8300000, guid: 35ec6045e736a574c8c6ad1bd826f57b, type: 3}
+  MusicTracks:
+    _serializedList: []

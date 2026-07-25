@@ -13,8 +13,8 @@ public class AudioObject : MonoBehaviour
 
     void Update()
     {
-        // Only destroy object after it is done playing.
-        if (played && !audioSource.isPlaying)
+        // Only destroy object after it is done playing + not looping
+        if (played && !audioSource.isPlaying && !audioSource.loop)
         {
             Destroy(gameObject);
         }

@@ -1,13 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class SkateboardController : MonoBehaviour
 {
     [Header("Speed")]
-    public float acceleration = 20f;
-    public float maxSpeed = 8f;
+    public float acceleration = 25f;
+    public float maxSpeed = 10f;
 
     [Header("Turning")]
     public float turnSpeed = 180f;
@@ -15,78 +13,157 @@ public class SkateboardController : MonoBehaviour
     public float minTurnSpeedFactor = 0.25f;
 
     [Header("Feel")]
-    public float grip = 8f;
+    // drag for speed, grip for carving
+    public float grip = 4f;
+    public float drag = 2f;
 
     [Header("Ground")]
-    public float groundCheckDistance = 0.6f;
-    public float groundAlignSpeed = 10f;
+    // steepness cutoff
+    public float groundNormalMinY = 0.1f;
+    public float groundCheckDistance = 0.3f;
 
-    bool isGrounded;
-    Vector3 groundNormal = Vector3.up;
+    [Header("Jump")]
+    public float jumpForce = 8f;
 
-    public Rigidbody rb;
+    [Header("Gravity")]
+    public float gravity = -20f;
+
+    [Header("Sliding")]
+    // how flat a surface needs to be before you stop sliding down it
+    public float slideThresholdY = 0.9f;
+
+    [Header("Visual Tilt")]
+    // cosmetic tilt, not physical
+    public Transform visualMesh;
+    public float tiltSpeed = 10f;
+
+    [Header("Air Pitch")]
+    // for ollie
+    public float maxAirPitch = 20f;
+    public float airPitchVelocityRange = 10f;
+
+    CharacterController controller;
     PlayerInput playerInput;
     InputAction movementAction;
+    InputAction jumpAction;
+
+    Vector3 velocity;
+    bool isGrounded;
+    bool wasGrounded;
+    bool jumpQueued;
+    Vector3 groundNormal = Vector3.up;
 
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
-        rb.maxLinearVelocity = maxSpeed;
-
-        InputSetup();
-    }
-
-    void InputSetup()
-    {
-        // Setup movement actions
+        controller = GetComponent<CharacterController>();
         playerInput = GetComponent<PlayerInput>();
         movementAction = playerInput.actions["Move"];
+        jumpAction = playerInput.actions["Jump"];
     }
 
-    void FixedUpdate()
+    void Update()
     {
-        // For live tuning
-        rb.maxLinearVelocity = maxSpeed;
-
         CheckGround();
 
         Vector2 input = movementAction.ReadValue<Vector2>();
+        if (jumpAction.WasPressedThisFrame())
+        {
+            jumpQueued = true;
+        }
 
-        rb.AddForce(transform.forward * input.y * acceleration, ForceMode.Acceleration);
-
-        float speedFactor = Mathf.Clamp01(rb.velocity.magnitude / maxSpeed);
-
-        // Turn faster while moving, slower while not
-        float turnFactor = Mathf.Lerp(minTurnSpeedFactor, 1f, speedFactor);
-        float turnThisFrame = input.x * turnSpeed * turnFactor * Time.fixedDeltaTime;
-        rb.MoveRotation(rb.rotation * Quaternion.Euler(0f, turnThisFrame, 0f));
-
-        // Smoother velocity realignment
-        Vector3 flatVelocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
-        Vector3 targetVelocity = transform.forward * flatVelocity.magnitude;
-        Vector3 carvedVelocity = Vector3.Lerp(flatVelocity, targetVelocity, grip * Time.fixedDeltaTime);
-        rb.velocity = new Vector3(carvedVelocity.x, rb.velocity.y, carvedVelocity.z);
+        HandleTurning(input);
 
         if (isGrounded)
         {
-            Quaternion alignedRotation = Quaternion.FromToRotation(transform.up, groundNormal) * rb.rotation;
-            rb.MoveRotation(Quaternion.Slerp(rb.rotation, alignedRotation, groundAlignSpeed * Time.fixedDeltaTime));
+            HandleGroundedMovement(input);
         }
+        else
+        {
+            velocity.y += gravity * Time.deltaTime;
+        }
+
+        jumpQueued = false;
+        controller.Move(velocity * Time.deltaTime);
+        UpdateVisualTilt();
+    }
+
+    void HandleTurning(Vector2 input)
+    {
+        float speedFactor = Mathf.Clamp01(velocity.magnitude / maxSpeed);
+        float turnFactor = Mathf.Lerp(minTurnSpeedFactor, 1f, speedFactor);
+        transform.Rotate(Vector3.up, input.x * turnSpeed * turnFactor * Time.deltaTime, Space.Self);
+    }
+
+    void HandleGroundedMovement(Vector2 input)
+    {
+        Vector3 slopeForward = Vector3.ProjectOnPlane(transform.forward, groundNormal).normalized;
+
+        velocity += slopeForward * input.y * acceleration * Time.deltaTime;
+
+        if (groundNormal.y < slideThresholdY)
+        {
+            Vector3 slopeGravity = Vector3.ProjectOnPlane(Vector3.up * gravity, groundNormal);
+            velocity += slopeGravity * Time.deltaTime;
+        }
+
+        velocity *= Mathf.Clamp01(1f - drag * Time.deltaTime);
+
+        if (Mathf.Abs(input.y) > 0.01f)
+        {
+            Vector3 targetVelocity = slopeForward * velocity.magnitude;
+            Vector3 carved = Vector3.Lerp(velocity, targetVelocity, grip * Time.deltaTime);
+            if (carved.y < velocity.y) carved.y = velocity.y;
+            velocity = carved;
+        }
+
+        Vector3 horizontal = Vector3.ClampMagnitude(new Vector3(velocity.x, 0f, velocity.z), maxSpeed);
+        velocity.x = horizontal.x;
+        velocity.z = horizontal.z;
+
+        if (jumpQueued) velocity.y += jumpForce;
     }
 
     void CheckGround()
     {
-        Vector3 origin = transform.position + Vector3.up * 0.2f;
+        float radius = controller.radius;
+        Vector3 capsuleBottom = new Vector3(transform.position.x, controller.bounds.min.y, transform.position.z);
+        Vector3 origin = capsuleBottom + Vector3.up * (radius + 0.05f);
 
-        if (Physics.Raycast(origin, Vector3.down, out RaycastHit hitInfo, groundCheckDistance))
+        if (Physics.SphereCast(origin, radius * 0.9f, Vector3.down, out RaycastHit hit, groundCheckDistance)
+            && hit.normal.y > groundNormalMinY)
         {
             isGrounded = true;
-            groundNormal = hitInfo.normal;
+            groundNormal = hit.normal;
         }
         else
         {
             isGrounded = false;
             groundNormal = Vector3.up;
         }
+    }
+
+    void UpdateVisualTilt()
+    {
+        if (visualMesh == null) return;
+
+        Quaternion targetLocalTilt;
+
+        if (isGrounded)
+        {
+            Vector3 localNormal = transform.InverseTransformDirection(groundNormal);
+            targetLocalTilt = Quaternion.FromToRotation(Vector3.up, localNormal);
+        }
+        else
+        {
+            float pitchT = Mathf.Clamp(velocity.y / airPitchVelocityRange, -1f, 1f);
+            targetLocalTilt = Quaternion.Euler(-pitchT * maxAirPitch, 0f, 0f);
+        }
+
+        bool justLanded = isGrounded && !wasGrounded;
+        visualMesh.localRotation = justLanded
+            ? targetLocalTilt
+            : Quaternion.Slerp(visualMesh.localRotation, targetLocalTilt, tiltSpeed * Time.deltaTime);
+
+        wasGrounded = isGrounded;
     }
 }

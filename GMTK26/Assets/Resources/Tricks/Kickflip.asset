@@ -15,8 +15,14 @@ MonoBehaviour:
   TrickName: Kickflip
   InputString: 03000000
   Button: 1
-  ButtonPresses: 1
   AnimationID: 
   PointValue: 100
   Holdable: 0
   SecretTrick: 0
+  AllowMultiTap: 1
+  multiTapOverrides:
+  - NameOverride: Double Kickflip
+    PointOverride: 200
+  - NameOverride: Triple Kickflip
+    PointOverride: 300
+  maxTaps: 3

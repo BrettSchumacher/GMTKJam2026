@@ -15,8 +15,10 @@ MonoBehaviour:
   TrickName: Ollie Airwalk
   InputString: 0300000003000000
   Button: 1
-  ButtonPresses: 1
   AnimationID: 
-  PointValue: 100
+  PointValue: 110
   Holdable: 0
   SecretTrick: 0
+  AllowMultiTap: 0
+  multiTapOverrides: []
+  maxTaps: 3

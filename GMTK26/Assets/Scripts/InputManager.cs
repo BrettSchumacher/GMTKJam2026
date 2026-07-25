@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using AYellowpaper.SerializedCollections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -17,7 +18,8 @@ public class InputManager : MonoBehaviour
     public static InputManager Instance;
 
     public InputState DefaultInputState;
-    public Dictionary<InputState, string> InputStateToActionMapName = new();
+    [SerializedDictionary("Input State", "Action Map Name")]
+    public SerializedDictionary<InputState, string> InputStateToActionMapName = new();
 
     private Stack<InputState> InputStates;
     private PlayerInput PlayerInputComponent;

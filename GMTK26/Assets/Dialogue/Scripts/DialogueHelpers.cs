@@ -50,6 +50,11 @@ public class ConversationData
     {
         Characters = characters;
     }
+
+    public bool IsEmpty()
+    {
+        return ConversationEntries.Count == 0;
+    }
 }
 
 public static class DialogueHelpers
@@ -71,6 +76,7 @@ public static class DialogueHelpers
     public static ConversationData LoadConversationFromCsvString(string csvString)
     {
         ConversationData conversation = new();
+        csvString = csvString.Replace("\r", "");
         string[] csvRows = csvString.Split('\n');
 
         if (csvRows.Length < 2)
@@ -146,7 +152,7 @@ public static class DialogueHelpers
         // To see if it's player dialogue go through and test if there's any fields filled before the final character (player) column
         bool isPlayer = true;
         int characterIndex = characters.Length - 1;
-        for (int i = 0; i < characters.Length - 2; ++i)
+        for (int i = 0; i < characters.Length - 1; ++i)
         {
             if (csvFields[i].Length > 0)
             {

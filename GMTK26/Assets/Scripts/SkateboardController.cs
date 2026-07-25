@@ -75,8 +75,8 @@ public class SkateboardController : MonoBehaviour
     {
         controller = GetComponent<CharacterController>();
         playerInput = GetComponent<PlayerInput>();
-        movementAction = playerInput.actions["Move"];
-        jumpAction = playerInput.actions["Jump"];
+        movementAction = playerInput.actions["Movement"];
+        jumpAction = playerInput.actions["Ollie"];
         grindAction = playerInput.actions["Grind"];
     }
 

@@ -21,7 +21,7 @@ public class InputManager : MonoBehaviour
     [SerializedDictionary("Input State", "Action Map Name")]
     public SerializedDictionary<InputState, string> InputStateToActionMapName = new();
 
-    private Stack<InputState> InputStates;
+    private Stack<InputState> InputStates = new Stack<InputState>();
     private PlayerInput PlayerInputComponent;
 
     private void Awake()

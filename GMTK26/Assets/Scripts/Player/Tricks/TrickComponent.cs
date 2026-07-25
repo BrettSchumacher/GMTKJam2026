@@ -1,3 +1,4 @@
+using NUnit.Framework.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -122,6 +123,12 @@ public class TrickComponent : MonoBehaviour
             firstInputTime = -10.0f;
             CheckTricks();
         }
+    }
+
+    //This should really be an event tbh
+    public void ExecuteTrick(TrickMatch TrickToDo)
+    {
+        Debug.Log($"Did a {TrickToDo.Trick.GetDisplayName(TrickToDo.TapCount)} (AnimID: {TrickToDo.Trick.GetAnimationID(TrickToDo.TapCount)}, Points: {TrickToDo.Trick.GetPointValue(TrickToDo.TapCount)}");
     }
 
 
@@ -387,7 +394,7 @@ public class TrickComponent : MonoBehaviour
 
         if (found)
         {
-            Debug.Log($"Did a {best.Trick.GetDisplayName(best.TapCount)} (AnimID: {best.Trick.GetAnimationID(best.TapCount)}, Points: {best.Trick.GetPointValue(best.TapCount)}");
+            ExecuteTrick(best);
             lastTrick = best;
             inputBuffer.Clear();
 

@@ -113,8 +113,15 @@ public class IntroManager : MonoBehaviour
         }
     }
 
+    private bool skipped = false;
     void SkipEmergencyBroadcast(InputAction.CallbackContext context)
     {
+        if (skipped)
+        {
+            return;
+        }
+
+        skipped = true;
         StartCoroutine(FadeOut());
         sirensSource?.Stop();
         broadcastSource?.Stop();

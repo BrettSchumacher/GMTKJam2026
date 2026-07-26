@@ -50,6 +50,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cb30f565e2e2b6448e0ea4227e2324a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  badEndingScene: BadEnding
   tradingSystem: {fileID: 3152982928357982287}
   countdownInMin: 65
   playIntro: 1
@@ -57,6 +58,7 @@ MonoBehaviour:
   countdownTimerText: {fileID: 1948118292248608448}
   itemsListText: {fileID: 4252405924511284618}
   currentTradeItemText: {fileID: 1793964633723309512}
+  currentTradeItemValueText: {fileID: 0}
   TrickTutorialText: {fileID: 6267403758723365953}
   numPeopleToInviteText: {fileID: 2951043016934648349}
   interactHudObj: {fileID: 5520903016578244148}
@@ -259,7 +261,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 23859901135791025, guid: cb6fb9101a89a4547a368529adb7c648, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 129
+      value: 908
       objectReference: {fileID: 0}
     - target: {fileID: 114595437544423775, guid: cb6fb9101a89a4547a368529adb7c648, type: 3}
       propertyPath: m_AnchorMax.y
@@ -351,7 +353,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2380127212112517622, guid: cb6fb9101a89a4547a368529adb7c648, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 29.000015
+      value: 808.00006
       objectReference: {fileID: 0}
     - target: {fileID: 2558456621416225786, guid: cb6fb9101a89a4547a368529adb7c648, type: 3}
       propertyPath: m_Pivot.x

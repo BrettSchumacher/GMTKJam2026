@@ -83,6 +83,7 @@ public class GameManager : MonoBehaviour
 
         trickTimer = trickTextDisplayTime;
         trickScoreText.text = "";
+        ClearTrickText();
     }
 
     private void SetupInteractInput()
@@ -201,8 +202,15 @@ public class GameManager : MonoBehaviour
     {
         trickText.text = trickName;
 
+        string prefix = "";
+        if (pointIncrease > 0)
+        {
+            prefix = "+ ";
+        }
+
         pointIncrease += (int) pointsGained;
-        trickScoreText.text = "+ " + pointIncrease;
+
+        trickScoreText.text = prefix + pointIncrease;
 
         trickTimer = trickTextDisplayTime;
     }

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Xml;
@@ -7,11 +7,12 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using static UnityEngine.Rendering.DebugUI;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager gameManager { get; private set; }
-
+    public string badEndingScene = "BadEnding";
     public TradingSystem tradingSystem;
 
     PlayerInput playerInput;
@@ -25,6 +26,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] public TextMeshProUGUI itemsListText;  // Text for wedding items that still must be obtained
     [SerializeField] public TextMeshProUGUI currentTradeItemText;
+    [SerializeField] public TextMeshProUGUI currentTradeItemValueText;
     public GameObject TrickTutorialText;
 
     private int numPeopleToInvite = 0;
@@ -121,9 +123,9 @@ public class GameManager : MonoBehaviour
         countdownTimer -= Time.deltaTime;
         countdownTimerText.text = String.Format("{0:00}",(Mathf.CeilToInt(countdownTimer / 60) - 1)) + ":" + String.Format("{0:00}", (Mathf.CeilToInt(countdownTimer % 60) - 1));
 
-        if (countdownTimer <= 0f)
+        if (countdownTimer <= 1f)
         {
-            // TODO: Go to end screen
+            SceneManager.LoadSceneAsync(badEndingScene);
         }
 
         trickTimer -= Time.deltaTime;
@@ -156,18 +158,22 @@ public class GameManager : MonoBehaviour
     // Text for wedding items that still must be obtained
     public void SetItemsListText(Dictionary<string, WeddingItem> checklist)
     {
-        string text = "Items for wedding:\n";
+        string text = "";
         foreach(KeyValuePair<string, WeddingItem> item in checklist)
         {
             if (item.Value.obtained)
             {
-                text += "<s>";
+                text += "- <s><color=green>";
+            }
+            else
+            {
+                text += "- ";
             }
             text += item.Value.item.ItemName;
 
             if (item.Value.obtained)
             {
-                text += "</s>";
+                text += "</s></color>";
             }
             text += "\n";
         }
@@ -177,7 +183,7 @@ public class GameManager : MonoBehaviour
 
     public void SetCurrentTradeItemText(string text)
     {
-        currentTradeItemText.text = "To trade: " + text;
+        currentTradeItemText.text = "Most Valuable Asset: " + text;
     }
 
     public void SetInteractText(string text)
@@ -229,7 +235,7 @@ public class GameManager : MonoBehaviour
     
     public void SetNumPeopleToInviteText()
     {
-        numPeopleToInviteText.text = "Invites left: " + numPeopleToInvite;
+        numPeopleToInviteText.text = "Uninvited Guests: " + numPeopleToInvite;
     }
 
     public void IncrementPeopleToInviteCount()

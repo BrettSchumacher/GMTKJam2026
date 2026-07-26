@@ -49,13 +49,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cb30f565e2e2b6448e0ea4227e2324a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  badEndingScene: BadEnding
   tradingSystem: {fileID: 3152982928357982287}
-  countdownInMin: 65
+  countdownInMin: 64
   playIntro: 1
   HUD: {fileID: 2204643917669419660}
   countdownTimerText: {fileID: 1948118292248608448}
   itemsListText: {fileID: 4252405924511284618}
   currentTradeItemText: {fileID: 7089542768936152442}
+  currentTradeItemValueText: {fileID: 7089542768936152442}
   numPeopleToInviteText: {fileID: 2951043016934648349}
   interactHudObj: {fileID: 5520903016578244148}
   interactText: {fileID: 9014552545570448109}

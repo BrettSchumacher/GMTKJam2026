@@ -5,12 +5,13 @@ using System.Xml;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager gameManager { get; private set; }
-
+    public string badEndingScene;
     public TradingSystem tradingSystem;
 
     PlayerInput playerInput;
@@ -24,6 +25,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] public TextMeshProUGUI itemsListText;  // Text for wedding items that still must be obtained
     [SerializeField] public TextMeshProUGUI currentTradeItemText;
+    [SerializeField] public TextMeshProUGUI currentTradeItemValueText;
 
     private int numPeopleToInvite = 0;
     [SerializeField] public TextMeshProUGUI numPeopleToInviteText;
@@ -108,6 +110,7 @@ public class GameManager : MonoBehaviour
         if (countdownTimer <= 0f)
         {
             // TODO: Go to end screen
+            SceneManager.LoadSceneAsync(badEndingScene);
         }
 
         if (playerInput == null)
@@ -134,14 +137,14 @@ public class GameManager : MonoBehaviour
     // Text for wedding items that still must be obtained
     public void SetItemsListText(Dictionary<string, WeddingItem> checklist)
     {
-        string text = "Items for wedding:\n";
+        string text = "";
         foreach(KeyValuePair<string, WeddingItem> item in checklist)
         {
             if (item.Value.obtained)
             {
                 text += "<s>";
             }
-            text += item.Value.item.ItemName;
+            text += "- " + item.Value.item.ItemName;
 
             if (item.Value.obtained)
             {
@@ -153,9 +156,10 @@ public class GameManager : MonoBehaviour
         itemsListText.text = text;
     }
 
-    public void SetCurrentTradeItemText(string text)
+    public void SetCurrentTradeItemText(string text, float value)
     {
-        currentTradeItemText.text = "To trade: " + text;
+        currentTradeItemText.text = "Most Valuable Asset: " + text;
+        currentTradeItemValueText.text = "Net Worth: " + String.Format("{0:C}", value);
     }
 
     public void SetInteractText(string text)
@@ -189,7 +193,7 @@ public class GameManager : MonoBehaviour
     
     public void SetNumPeopleToInviteText()
     {
-        numPeopleToInviteText.text = "Invites left: " + numPeopleToInvite;
+        numPeopleToInviteText.text = "Uninvited Guests: " + numPeopleToInvite;
     }
 
     public void IncrementPeopleToInviteCount()

@@ -25,6 +25,8 @@ public class TypewriterEffect : MonoBehaviour
 	[SerializeField] float speechPitch = 1;
 	[SerializeField] float speechPitchRandomizationRange = 0.25f;
 
+	public bool autoStart = false;
+	[TextArea]public string autoStartString = "";
 	public bool fromDM = false;
 
 	Coroutine typewriterCoroutine;
@@ -46,6 +48,10 @@ public class TypewriterEffect : MonoBehaviour
     {
 		_tmpProText = GetComponent<TMP_Text>()!;
 		fromDM = false;
+		if (autoStart)
+		{
+			NewText(autoStartString, OnCompletedCallback);
+		}
 	}
 
     public void NewText(string newText, Action completedCallback)

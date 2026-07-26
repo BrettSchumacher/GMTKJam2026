@@ -777,8 +777,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   delayBeforeStart: 0
   delayAfterEnd: 0
-  timeBtwChars: 0.04
-  timeBtwWords: 0.07
+  timeBtwChars: 0
+  timeBtwWords: 0
   leadingChar: 
   forceNewlineWidth: 1110
   leadingCharBeforeDelay: 0
@@ -953,8 +953,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   delayBeforeStart: 0
   delayAfterEnd: 0
-  timeBtwChars: 0.04
-  timeBtwWords: 0.07
+  timeBtwChars: 0
+  timeBtwWords: 0
   leadingChar: 
   forceNewlineWidth: 1110
   leadingCharBeforeDelay: 0
@@ -1525,8 +1525,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   delayBeforeStart: 0
   delayAfterEnd: 0
-  timeBtwChars: 0.04
-  timeBtwWords: 0.07
+  timeBtwChars: 0
+  timeBtwWords: 0
   leadingChar: 
   forceNewlineWidth: 1110
   leadingCharBeforeDelay: 0
@@ -2400,7 +2400,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 5519337128774643523}
   m_Direction: 0
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.99999994
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -2905,8 +2905,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   delayBeforeStart: 0
   delayAfterEnd: 0
-  timeBtwChars: 0.04
-  timeBtwWords: 0.07
+  timeBtwChars: 0
+  timeBtwWords: 0
   leadingChar: 
   forceNewlineWidth: 1110
   leadingCharBeforeDelay: 0
@@ -2953,11 +2953,11 @@ RectTransform:
   - {fileID: 8637430759574451091}
   m_Father: {fileID: 8760577127823294206}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0.000030517578, y: 0}
   m_SizeDelta: {x: 925, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &2547134323024377663
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3366,7 +3366,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2230672942298482253}
   m_HandleRect: {fileID: 8466416453132293980}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:

@@ -36,6 +36,12 @@ public class GameManager : MonoBehaviour
     private bool IsWaitingOnTrick;
     private bool isPaused = false;
 
+    [SerializeField] private TextMeshProUGUI trickText;
+    [SerializeField] private TextMeshProUGUI trickScoreText;
+    public float trickTextDisplayTime = 1;
+    private float trickTimer;
+    private int trickScore = 0;
+
     private void Awake()
     {
         // Setup Game Manager singleton 
@@ -72,6 +78,9 @@ public class GameManager : MonoBehaviour
         {
             IntroManager.Instance.StartIntro();
         }
+
+        trickTimer = trickTextDisplayTime;
+        trickScoreText.text = "Rads: ";
     }
 
     private void SetupInteractInput()
@@ -115,6 +124,12 @@ public class GameManager : MonoBehaviour
         if (countdownTimer <= 0f)
         {
             // TODO: Go to end screen
+        }
+
+        trickTimer -= Time.deltaTime;
+        if (trickTimer <= 0)
+        {
+            ClearTrickText();
         }
 
         if (playerInput == null)
@@ -174,6 +189,19 @@ public class GameManager : MonoBehaviour
         {
             interactHudObj.SetActive(false);
         }
+    }
+
+    public void SetTrickText(string trickName, float pointsGained)
+    {
+        trickText.text = trickName + " +" + pointsGained;
+        trickScore += (int) pointsGained;
+        trickScoreText.text = "Rads: " + trickScore;
+        trickTimer = trickTextDisplayTime;
+    }
+
+    private void ClearTrickText()
+    {
+        trickText.text = string.Empty;
     }
 
     public void SetWaitingForTrick(bool waiting)

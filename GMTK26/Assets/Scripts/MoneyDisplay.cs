@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
@@ -39,18 +40,18 @@ public class MoneyDisplayer : MonoBehaviour
             num = num / i * i;
         }
 
-        if (num >= 1000000000000000)
-            return num.ToString("E", CultureInfo.InvariantCulture);
-        if (num >= 1000000000000)
-            return (num / 1000000000000D).ToString("0.##") + "T";
-        if (num >= 1000000000)
-            return (num / 1000000000D).ToString("0.##") + "B";
-        if (num >= 1000000)
-            return (num / 1000000D).ToString("0.##") + "M";
-        if (num >= 1000)
-            return (num / 1000D).ToString("0.##") + "K";
+        //if (num >= 1000000000000000)
+        //    return num.ToString("E", CultureInfo.InvariantCulture);
+        //if (num >= 1000000000000)
+        //    return (num / 1000000000000D).ToString("0.##") + "T";
+        //if (num >= 1000000000)
+        //    return (num / 1000000000D).ToString("0.##") + "B";
+        //if (num >= 1000000)
+        //    return (num / 1000000D).ToString("0.##") + "M";
+        //if (num >= 1000)
+        //    return (num / 1000D).ToString("0.##") + "K";
 
-        return num.ToString("0.##");
+        return String.Format("{0:C}", num);
     }
 
     //TODO: Fix this
@@ -109,6 +110,6 @@ public class MoneyDisplayer : MonoBehaviour
 
     private void SetDisplayText()
     {
-        textObj.text = "Net worth: $" + FormatNumber(currentMoney);
+        textObj.text = "Net worth: " + FormatNumber(currentMoney);
     }
 }

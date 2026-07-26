@@ -208,7 +208,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  fadeinoutImage: {fileID: 8800752351876844051}
+  fadeinoutImage: {fileID: 0}
+  EmergencyBroadcastImage: {fileID: 8800752351876844051}
   broadcastFadeBackInDur: 1
   fadeBackInCurve:
     serializedVersion: 2
@@ -243,9 +244,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  broadcastImage: {fileID: 8800752351876844051}
-  fadeInDelay: 0.3
-  fadeOutDelay: 0.75
 --- !u!1 &4676625647405217095
 GameObject:
   m_ObjectHideFlags: 0

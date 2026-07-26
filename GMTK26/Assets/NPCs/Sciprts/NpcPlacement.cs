@@ -5,16 +5,38 @@ using UnityEngine;
 
 public class NpcPlacement : MonoBehaviour
 {
-    public static Dictionary<string, List<NpcPlacement>> NpcPlacementsById;
-    
-    public string NpcId;
-    public int ConversationIndex = 0;
+    public static List<NpcPlacement> NpcPlacements;
+
+    public ConversationSO Conversation;
 
     private void Awake()
     {
-        NpcPlacementsById ??= new();
+        NpcPlacements ??= new();
+        NpcPlacements.Add(this);
+    }
 
-        NpcPlacementsById[NpcId] ??= new();
-        NpcPlacementsById[NpcId].Add(this);
+    private void OnDestroy()
+    {
+        NpcPlacements.Remove(this);
+    }
+
+    public void Interact()
+    {
+        ConversationData convo = Conversation.GetConversationData();
+        if (!convo.IsEmpty())
+        {
+            AudioManager.PlayBackgroundMusic(Conversation.Music, Conversation.MusicVolume);
+            DialogueManager.Instance.StartDialogue(convo, OnDialogueCompleted);
+        }
+        else
+        {
+            OnDialogueCompleted();
+        }
+    }
+
+    public void OnDialogueCompleted()
+    {
+        AudioManager.PlayBackgroundMusic(MusicTracks.Background, 0.5f);
+        TradingSystem.Instance.TradeItem(Conversation.WeddingItem);
     }
 }

@@ -13,12 +13,17 @@ MonoBehaviour:
   m_Name: NpcDatabase
   m_EditorClassIdentifier: 
   Npcs:
-  - DisplayName: Andrew Fields
-    Id: Andrew Fields
+  - Name: Andy Fields
     Portrait: {fileID: 10915, guid: 0000000000000000f000000000000000, type: 0}
-    Conversations: []
-  - DisplayName: Chet Baker
-    Id: Chet Baker
-    Portrait: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
-    Conversations:
-    - {fileID: 4900000, guid: 5efb706797db5db468ea452b6bb6a6f0, type: 3}
+  - Name: Miranda Song
+    Portrait: {fileID: 21300000, guid: 4f0d54527b2be3e4fb2c86d0d7dfb776, type: 3}
+  - Name: Angie Dowd
+    Portrait: {fileID: 21300000, guid: a5eb3aee6e3f55e49a2d2f3a40a316fd, type: 3}
+  - Name: Chet Baker
+    Portrait: {fileID: 21300000, guid: 696a1cb6e71f5da4790699970f59abca, type: 3}
+  - Name: Patty Torres
+    Portrait: {fileID: 21300000, guid: 3b098ebf4315fa04398043b5edd77a2f, type: 3}
+  - Name: Annabelle McNeil
+    Portrait: {fileID: 21300000, guid: 7088bebc96f1b5144b2da62f023d7174, type: 3}
+  - Name: Miss Schiller
+    Portrait: {fileID: 21300000, guid: d5d1d9e3336111941bcd7fc71d934e7a, type: 3}

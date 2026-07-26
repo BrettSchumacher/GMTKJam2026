@@ -10,6 +10,9 @@ public enum MusicTracks
     Menu,
     Opening,
     Background,
+    Dialogue_Light,
+    Dialogue_Bright,
+    Dialogue_Heavy,
     Pause,
     Ending
 }
@@ -49,7 +52,7 @@ public class AudioManager : MonoBehaviour
         Instance = null;
     }
 
-    public static void PlayBackgroundMusic(MusicTracks track, float delay = 0f)
+    public static void PlayBackgroundMusic(MusicTracks track, float volume = 1f, float delay = 0f)
     {
         if (Instance == null)
         {
@@ -75,6 +78,7 @@ public class AudioManager : MonoBehaviour
         }
         Instance.MusicSource.clip = clip;
         Instance.MusicSource.loop = true;
+        Instance.MusicSource.volume = volume;
 
         if (delay > 0f)
         {

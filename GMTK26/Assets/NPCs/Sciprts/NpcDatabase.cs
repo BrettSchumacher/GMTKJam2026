@@ -8,8 +8,6 @@ public struct NpcData
 {
     public string Name;
     public Sprite Portrait;
-    public TextAsset Conversation;
-    public ItemsSO WeddingItem;
 }
 
 [CreateAssetMenu(fileName = "NpcDatabase", menuName = "ScriptableObjects/NpcDatabase", order = 1)]

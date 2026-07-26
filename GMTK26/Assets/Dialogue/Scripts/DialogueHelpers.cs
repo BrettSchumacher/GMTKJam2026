@@ -227,7 +227,7 @@ public static class DialogueHelpers
                     insideQuote = true;
                     continue;
                 case ',':
-                    csvFields.Add(currentField);
+                    csvFields.Add(ReplaceItemFields(currentField));
                     currentField = "";
                     continue;
                 default:
@@ -235,9 +235,29 @@ public static class DialogueHelpers
                     break;
             }
         }
-
-        csvFields.Add(currentField);
+        
+        csvFields.Add(ReplaceItemFields(currentField));
 
         return csvFields;
+    }
+
+    private static string ReplaceItemFields(string text)
+    {
+        if (TradingSystem.Instance)
+        {
+            ItemsSO itemSO = TradingSystem.Instance.GetCurrentTradableItem();
+            ItemsSO tradeSO = TradingSystem.Instance.GetNextTradableItem();
+            if (itemSO)
+            {
+                text = text.Replace("[highest value item]", itemSO.ItemName);
+            }
+
+            if (tradeSO)
+            {
+                text = text.Replace("[trade item]", tradeSO.ItemName);
+            }
+        }
+
+        return text;
     }
 }

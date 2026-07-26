@@ -44,6 +44,11 @@ public class GameManager : MonoBehaviour
         countdownTimer = (float) countdownInMin * 60;
         SetupInteractInput();
         interactHudObj.SetActive(false);
+
+        if (AudioManager.Instance)
+        {
+            AudioManager.PlayBackgroundMusic(MusicTracks.Background, 0.5f);
+        }
     }
 
     private void SetupInteractInput()

@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Car
   m_EditorClassIdentifier: 
   ItemName: Car
-  Value: 200
+  Value: 26000
   Image: {fileID: 0}
   forWedding: 0

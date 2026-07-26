@@ -4,12 +4,21 @@ using UnityEngine;
 
 public class Interactable : MonoBehaviour
 {
+    public NpcPlacement NpcPlacement;
+    public bool OneTimeInteractable = false;
+    
     [SerializeField] protected string interactText;
 
     protected bool isPlayerInArea;
+    private bool interacted = false;
 
     protected void OnTriggerEnter(Collider other)
     {
+        if (OneTimeInteractable && interacted)
+        {
+            return;
+        }
+        
         // If Player enters area, set this interactable object as the selected object and set interact text
         if (other.GetComponent<SkateboardController>() != null)
         {
@@ -22,6 +31,11 @@ public class Interactable : MonoBehaviour
     // Probably don't need this, but I copied it from another project so why not.
     protected void OnTriggerStay(Collider other)
     {
+        if (OneTimeInteractable && interacted)
+        {
+            return;
+        }
+        
         // If the Player is in the area when they left the area of another interactable object (or it disappeared), set this as the selected interactable object
         if (other.GetComponent<SkateboardController>() != null && GameManager.gameManager.GetSelectedInteractableObj() == null)
         {
@@ -47,7 +61,26 @@ public class Interactable : MonoBehaviour
 
     public virtual void TriggerAction()
     {
+        if (NpcPlacement)
+        {
+            NpcPlacement.Interact();
+        }
 
+        interacted = true;
+        
+        // Deactivate once we've gone through the conversation
+        if (OneTimeInteractable)
+        {
+            GameManager.gameManager.SetSelectedInteractableObj(null);
+            GameManager.gameManager.SetInteractText("");
+            isPlayerInArea = false;
+            enabled = false;
+            var dampenField = GetComponent<DampenZone>();
+            if (dampenField)
+            {
+                dampenField.enabled = false;
+            }
+        }
     }
 
     protected void OnDestroy()

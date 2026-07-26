@@ -70,6 +70,8 @@ public class DialogueManager : MonoBehaviour
     private InputAction upChoiceInputAction;
     private InputAction downChoiceInputAction;
 
+    private bool inputConfigured = false;
+
     void Awake()
     {
         if (Instance)
@@ -79,6 +81,11 @@ public class DialogueManager : MonoBehaviour
         }
 
         Instance = this;
+    }
+
+    private void Start()
+    {
+        TryConfigureInput();
     }
 
     private void OnEnable()
@@ -93,6 +100,11 @@ public class DialogueManager : MonoBehaviour
 
     void TryConfigureInput()
     {
+        if (inputConfigured)
+        {
+            return;
+        }
+        
         if (!PlayerManager.Instance)
         {
             return;
@@ -123,10 +135,17 @@ public class DialogueManager : MonoBehaviour
         {
             downChoiceInputAction.performed += OnChoiceDownInput;
         }
+
+        inputConfigured = true;
     }
 
     void CleanupInputCallbacks()
     {
+        if (!inputConfigured)
+        {
+            return;
+        }
+        
         if (advanceInputAction!= null)
         {
             advanceInputAction.performed -= OnAdvanceInput;
@@ -141,6 +160,8 @@ public class DialogueManager : MonoBehaviour
         {
             downChoiceInputAction.performed -= OnChoiceDownInput;
         }
+
+        inputConfigured = false;
     }
 
     public bool StartDialogue(ConversationData conversation, Action callback = null)
@@ -168,6 +189,7 @@ public class DialogueManager : MonoBehaviour
         currentSelectedChoiceIndex = 0;
         currentConversationCompleteCallback = callback;
         
+        TryConfigureInput();
         ConfigureUIForCurrentEntry();
         OpenDialogueUI();
         return true;

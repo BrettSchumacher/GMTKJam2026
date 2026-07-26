@@ -40,6 +40,11 @@ public class TradingSystem : MonoBehaviour
        return tradableItemDatabase.items[currentTradableItemIndex];
     }
 
+    public ItemsSO GetNextTradableItem()
+    {
+        return tradableItemDatabase.items[currentTradableItemIndex + 1];
+    }
+
     public void TradeItem(ItemsSO weddingItem)
     {
         Debug.Log("Trade item: " + GetCurrentTradableItem() + " for " + weddingItemChecklist[weddingItem.ItemName].item.ItemName);

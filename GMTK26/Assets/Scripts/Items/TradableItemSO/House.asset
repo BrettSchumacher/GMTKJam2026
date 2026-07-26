@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: House
   m_EditorClassIdentifier: 
   ItemName: House
-  Value: 300
+  Value: 3500000
   Image: {fileID: 0}
   forWedding: 0

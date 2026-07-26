@@ -1,16 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using AYellowpaper.SerializedCollections;
+using Cinemachine;
 using UnityEngine;
 
 public class WeddingManager : MonoBehaviour
 {
+    [Header("Conversations")]
     public TextAsset WeddingIntroConvo;
     public TextAsset WeddingMainConvo;
     
     public TextAsset NoWeddingItemsConvo;
     public TextAsset NotAllWeddingItemsConvo;
     public TextAsset AllWeddingItemsConvo;
+
+    [Header("Visuals")] 
+    public CinemachineVirtualCamera WeddingCamMain;
+    public CinemachineVirtualCamera WeddingCamEnd;
     
     [SerializedDictionary("Item", "Conversation")]
     public SerializedDictionary<ItemsSO, TextAsset> ItemToWeddingDialogue = new();
@@ -28,16 +34,23 @@ public class WeddingManager : MonoBehaviour
 
         weddingStarted = true;
         
-        // Adjust input to stop player movement
+        // start wedding audio
         // Maybe set player position
+
+        if (InputManager.Instance)
+        {
+            InputManager.Instance.PushInputState(InputState.Cutscene);
+        }
         
         SetWeddingCamera();
     }
 
     private void SetWeddingCamera()
     {
-        // do camera stuff
-        // start wedding audio
+        if (CameraController.Instance && WeddingCamMain)
+        {
+            CameraController.Instance.PushCamera(WeddingCamMain);
+        }
         // probably convert to coroutine and wait for anim to finish
         StartWeddingDialogue();
     }
@@ -65,7 +78,10 @@ public class WeddingManager : MonoBehaviour
     private void OnWeddingDialogueFinished()
     {
         // maybe do final music change
-        // final camera anim
+        if (CameraController.Instance && WeddingCamEnd)
+        {
+            CameraController.Instance.PushCamera(WeddingCamEnd);
+        }
         // go to game over
     }
 

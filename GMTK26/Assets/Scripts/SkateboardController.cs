@@ -36,6 +36,11 @@ public class SkateboardController : MonoBehaviour
     // cosmetic tilt, not physical
     public Transform visualMesh;
     public float tiltSpeed = 10f;
+    
+    [Header("Camera FOV")]
+    public float minFov = 60f;
+    public float maxFov = 90f;
+    public AnimationCurve fovCurve;
 
     [Header("Air Pitch")]
     // for ollie
@@ -118,6 +123,7 @@ public class SkateboardController : MonoBehaviour
 
         jumpQueued = false;
         UpdateVisualTilt();
+        UpdateCameraFOV();
 
         if (cameraShake != null)
         {
@@ -139,7 +145,7 @@ public class SkateboardController : MonoBehaviour
     {
         Vector3 slopeForward = Vector3.ProjectOnPlane(transform.forward, groundNormal).normalized;
 
-        velocity += slopeForward * input.y * acceleration * Time.deltaTime;
+        velocity += slopeForward * (input.y * acceleration * Time.deltaTime);
 
         if (groundNormal.y < slideThresholdY)
         {
@@ -216,6 +222,18 @@ public class SkateboardController : MonoBehaviour
             : Quaternion.Slerp(visualMesh.localRotation, targetLocalTilt, tiltSpeed * Time.deltaTime);
 
         wasGrounded = isGrounded;
+    }
+
+    void UpdateCameraFOV()
+    {
+        float speed = velocity.magnitude;
+        float t = Mathf.Clamp01(speed / maxSpeed);
+        float fovLerpAmt = fovCurve.Evaluate(t);
+        float newFov = Mathf.Lerp(minFov, maxFov, fovLerpAmt);
+        if (CameraController.Instance)
+        {
+            CameraController.Instance.SetPlayerFov(newFov);
+        }
     }
 
     GrindRail FindNearbyRail(out Vector3 attachPoint, out float distanceAlongRail)

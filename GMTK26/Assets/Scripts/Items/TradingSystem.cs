@@ -60,6 +60,7 @@ public class TradingSystem : MonoBehaviour
 
         GetComponent<GameManager>().SetItemsListText(weddingItemChecklist);
         GetComponent<GameManager>().SetCurrentTradeItemText(GetCurrentTradableItem().ItemName);
+        GetComponent<GameManager>().DecrementPeopleToInviteCount();
     }
 
     public int GetNumWeddingItemsObtained()

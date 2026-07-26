@@ -23,6 +23,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] public TextMeshProUGUI itemsListText;  // Text for wedding items that still must be obtained
     [SerializeField] public TextMeshProUGUI currentTradeItemText;
 
+    private int numPeopleToInvite = 0;
+    [SerializeField] public TextMeshProUGUI numPeopleToInviteText;
+
     private Interactable currentInteractable;
     [SerializeField] private GameObject interactHudObj;
     [SerializeField] private TextMeshProUGUI interactText;
@@ -133,5 +136,22 @@ public class GameManager : MonoBehaviour
         {
             interactHudObj.SetActive(false);
         }
+    }
+
+    public void SetNumPeopleToInviteText()
+    {
+        numPeopleToInviteText.text = "Invites left: " + numPeopleToInvite;
+    }
+
+    public void IncrementPeopleToInviteCount()
+    {
+        numPeopleToInvite++;
+        SetNumPeopleToInviteText();
+    }
+
+    public void DecrementPeopleToInviteCount()
+    {
+        numPeopleToInvite--;
+        SetNumPeopleToInviteText();
     }
 }

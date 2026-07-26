@@ -54,6 +54,7 @@ MonoBehaviour:
   countdownTimerText: {fileID: 1948118292248608448}
   itemsListText: {fileID: 4252405924511284618}
   currentTradeItemText: {fileID: 7089542768936152442}
+  numPeopleToInviteText: {fileID: 2951043016934648349}
   interactHudObj: {fileID: 5520903016578244148}
   interactText: {fileID: 9014552545570448109}
 --- !u!114 &3152982928357982287
@@ -269,6 +270,10 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 383863448982699569, guid: cb6fb9101a89a4547a368529adb7c648, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -182.99997
+      objectReference: {fileID: 0}
     - target: {fileID: 467398322405514083, guid: cb6fb9101a89a4547a368529adb7c648, type: 3}
       propertyPath: m_SizeDelta.x
       value: 0
@@ -284,6 +289,10 @@ PrefabInstance:
     - target: {fileID: 826014672359072008, guid: cb6fb9101a89a4547a368529adb7c648, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 826014672359072008, guid: cb6fb9101a89a4547a368529adb7c648, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -126
       objectReference: {fileID: 0}
     - target: {fileID: 945444364893557964, guid: cb6fb9101a89a4547a368529adb7c648, type: 3}
       propertyPath: m_AnchorMax.y
@@ -425,6 +434,14 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3121472173998082330, guid: cb6fb9101a89a4547a368529adb7c648, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 698
+      objectReference: {fileID: 0}
+    - target: {fileID: 3121472173998082330, guid: cb6fb9101a89a4547a368529adb7c648, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 373
+      objectReference: {fileID: 0}
     - target: {fileID: 4932431405467217094, guid: cb6fb9101a89a4547a368529adb7c648, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -497,6 +514,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9191528293532357983, guid: cb6fb9101a89a4547a368529adb7c648, type: 3}
+      propertyPath: m_text
+      value: 'Invites left: '
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -505,6 +526,17 @@ PrefabInstance:
 --- !u!114 &1948118292248608448 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5509011709870768514, guid: cb6fb9101a89a4547a368529adb7c648, type: 3}
+  m_PrefabInstance: {fileID: 6303609793961246530}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2951043016934648349 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9191528293532357983, guid: cb6fb9101a89a4547a368529adb7c648, type: 3}
   m_PrefabInstance: {fileID: 6303609793961246530}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}

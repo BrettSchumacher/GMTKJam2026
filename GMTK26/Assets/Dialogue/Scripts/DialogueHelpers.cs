@@ -62,8 +62,10 @@ public class ConversationData
         {
             return;
         }
+
+        Characters ??= Array.Empty<string>();
         
-        Characters = Characters.Union(otherConversation.Characters).ToArray();
+        Characters = Characters.Union(otherConversation.Characters ?? Array.Empty<string>()).ToArray();
         ConversationEntries.AddRange(otherConversation.ConversationEntries);
     }
 }

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: StartConversation
   m_EditorClassIdentifier: 
   Conversation: {fileID: 4900000, guid: 1690058c4f13bfb46ac296b8b572b29d, type: 3}
+  TrickCompleteDialogue: {fileID: 0}
   WeddingItem: {fileID: 0}
   Music: 4
-  MusicVolume: 0.5
+  MusicVolume: 0.3

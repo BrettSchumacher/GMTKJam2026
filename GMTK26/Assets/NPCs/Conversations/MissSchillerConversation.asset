@@ -16,4 +16,4 @@ MonoBehaviour:
   TrickCompleteDialogue: {fileID: 4900000, guid: b56ceb15f9d95f44887689a63c2ea7cb, type: 3}
   WeddingItem: {fileID: 11400000, guid: dbdc1a59746fa864fbaf4dae7ace3576, type: 2}
   Music: 5
-  MusicVolume: 1
+  MusicVolume: 0.5

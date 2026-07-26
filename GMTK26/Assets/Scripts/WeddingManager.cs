@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using AYellowpaper.SerializedCollections;
@@ -13,6 +14,8 @@ public class WeddingManager : MonoBehaviour
     public TextAsset NoWeddingItemsConvo;
     public TextAsset NotAllWeddingItemsConvo;
     public TextAsset AllWeddingItemsConvo;
+
+    public float IntroToVowsDelay = 2f;
 
     [Header("Visuals")] 
     public CinemachineVirtualCamera WeddingCamIntro;
@@ -38,7 +41,7 @@ public class WeddingManager : MonoBehaviour
 
         weddingStarted = true;
         
-        AudioManager.PlayBackgroundMusic(MusicTracks.Wedding_Intro, 0.5f);
+        AudioManager.PlayBackgroundMusic(MusicTracks.Wedding_Intro, 0.3f);
         // Maybe set player position
 
         if (InputManager.Instance)
@@ -104,7 +107,10 @@ public class WeddingManager : MonoBehaviour
         }
         else
         {
-            DialogueManager.Instance.StartDialogue(WeddingVowsConversation, OnVowsDialogueFinished);
+            StartCoroutine(ExecuteAfterDelay(IntroToVowsDelay, () => 
+                DialogueManager.Instance.StartDialogue(WeddingVowsConversation, OnVowsDialogueFinished)
+            ));
+            
         }
     }
 
@@ -173,5 +179,11 @@ public class WeddingManager : MonoBehaviour
         {
             WeddingVowsConversation.AppendConversation(DialogueHelpers.LoadConversationFromCsvString(WeddingMainConvo.text));
         }
+    }
+
+    IEnumerator ExecuteAfterDelay(float delay, Action callback)
+    {
+        yield return new WaitForSeconds(delay);
+        callback?.Invoke();
     }
 }

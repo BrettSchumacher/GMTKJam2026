@@ -29,3 +29,5 @@ MonoBehaviour:
     Portrait: {fileID: 21300000, guid: d5d1d9e3336111941bcd7fc71d934e7a, type: 3}
   - Name: Imperator Johnny
     Portrait: {fileID: 21300000, guid: 2ba1344b34c061c4ca7b9184ec3f549b, type: 3}
+  - Name: Father Derricotte
+    Portrait: {fileID: 21300000, guid: 5b9bca6ac31a8a54dac7e5a4ecca66d8, type: 3}

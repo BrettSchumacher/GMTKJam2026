@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] public TextMeshProUGUI itemsListText;  // Text for wedding items that still must be obtained
     [SerializeField] public TextMeshProUGUI currentTradeItemText;
+    public GameObject TrickTutorialText;
 
     private int numPeopleToInvite = 0;
     [SerializeField] public TextMeshProUGUI numPeopleToInviteText;
@@ -178,6 +179,7 @@ public class GameManager : MonoBehaviour
     public void SetWaitingForTrick(bool waiting)
     {
         IsWaitingOnTrick = waiting;
+        TrickTutorialText?.SetActive(waiting);
 
         foreach (var interact in Interactable.Interactives)
         {

@@ -56,6 +56,7 @@ MonoBehaviour:
   countdownTimerText: {fileID: 1948118292248608448}
   itemsListText: {fileID: 4252405924511284618}
   currentTradeItemText: {fileID: 7089542768936152442}
+  TrickTutorialText: {fileID: 6267403758723365953}
   numPeopleToInviteText: {fileID: 2951043016934648349}
   interactHudObj: {fileID: 5520903016578244148}
   interactText: {fileID: 9014552545570448109}
@@ -530,6 +531,11 @@ MonoBehaviour:
 --- !u!1 &5520903016578244148 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2009972948395155830, guid: cb6fb9101a89a4547a368529adb7c648, type: 3}
+  m_PrefabInstance: {fileID: 6303609793961246530}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &6267403758723365953 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 108263646590452483, guid: cb6fb9101a89a4547a368529adb7c648, type: 3}
   m_PrefabInstance: {fileID: 6303609793961246530}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &7089542768936152442 stripped

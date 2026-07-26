@@ -24,7 +24,6 @@ public class IntroManager : MonoBehaviour
     public float broadcastFadeOutDur = 3f;
     public AnimationCurve fadeOutCurve;
     public Image fadeinoutImage;
-    public Image EmergencyBroadcastImage;
     public float broadcastFadeBackInDur = 3f;
     public AnimationCurve fadeBackInCurve;
 

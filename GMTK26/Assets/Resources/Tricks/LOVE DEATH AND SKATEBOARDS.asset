@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 726ab84112e82b8449af5802c21ece67, type: 3}
-  m_Name: Akuma Step
+  m_Name: LOVE DEATH AND SKATEBOARDS
   m_EditorClassIdentifier: 
-  TrickName: Akuma Step
-  InputString: 010000000200000005000000010000000200000005000000
+  TrickName: LOVE DEATH AND SKATEBOARDS
+  InputString: 050000000200000001000000000000000300000005000000
   Button: 1
-  AnimationID: Kickflip
-  PointValue: 1500
+  AnimationID: Heelflip
+  PointValue: 2000
   Holdable: 0
   SecretTrick: 0
   AllowMultiTap: 0
   multiTapOverrides: []
   maxTaps: 3
-  lastAssetName: Akuma Step
-  lastTrickName: Akuma Step
+  lastAssetName: LOVE DEATH AND SKATEBOARDS
+  lastTrickName: LOVE DEATH AND SKATEBOARDS

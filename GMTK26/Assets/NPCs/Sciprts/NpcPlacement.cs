@@ -41,7 +41,38 @@ public class NpcPlacement : MonoBehaviour
 
     public void OnDialogueCompleted()
     {
-        AudioManager.PlayBackgroundMusic(MusicTracks.Background, 0.5f);
+        AudioManager.PlayBackgroundMusic(MusicTracks.DoATrick, 0.5f);
+        
+        if (PlayerManager.Instance)
+        {
+            PlayerManager.Instance.RegisterNextTrickCallback(OnTrickCompleted);
+            GameManager.gameManager?.SetWaitingForTrick(true);
+        }
+        else
+        {
+            OnTrickCompleted();
+        }
+    }
+
+    void OnTrickCompleted()
+    {
+        GameManager.gameManager?.SetWaitingForTrick(false);
+        
+        ConversationData convo = Conversation.GetPostConversationData();
+        if (!convo.IsEmpty())
+        {
+            AudioManager.PlayBackgroundMusic(Conversation.Music, Conversation.MusicVolume);
+            DialogueManager.Instance.StartDialogue(convo, OnPostTrickDialogueCompleted);
+        }
+        else
+        {
+            OnPostTrickDialogueCompleted();
+        }
+    }
+
+    void OnPostTrickDialogueCompleted()
+    {
         TradingSystem.Instance.TradeItem(Conversation.WeddingItem);
+        AudioManager.PlayBackgroundMusic(MusicTracks.Background, 0.5f);
     }
 }

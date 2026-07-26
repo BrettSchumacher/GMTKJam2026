@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d58e3cee35f54b349a0f6ed375cb2652, type: 3}
   m_Name: MissSchillerConversation
   m_EditorClassIdentifier: 
-  Conversation: {fileID: 0}
+  Conversation: {fileID: 4900000, guid: a7a7bae1101b8cb41a90aaa4c7296d84, type: 3}
+  TrickCompleteDialogue: {fileID: 4900000, guid: b56ceb15f9d95f44887689a63c2ea7cb, type: 3}
   WeddingItem: {fileID: 11400000, guid: dbdc1a59746fa864fbaf4dae7ace3576, type: 2}
   Music: 5
   MusicVolume: 1

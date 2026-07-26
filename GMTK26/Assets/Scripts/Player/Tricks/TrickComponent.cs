@@ -135,6 +135,11 @@ public class TrickComponent : MonoBehaviour
     //This should really be an event tbh
     public void ExecuteTrick(TrickMatch TrickToDo)
     {
+        if (PlayerManager.Instance)
+        {
+            PlayerManager.Instance.HandleTrickCompleted();
+        }
+        
         Debug.Log($"Did a {TrickToDo.Trick.GetDisplayName(TrickToDo.TapCount)} (AnimID: {TrickToDo.Trick.GetAnimationID(TrickToDo.TapCount)}, Points: {TrickToDo.Trick.GetPointValue(TrickToDo.TapCount)}");
 
         skateboardAnimator.Play(TrickToDo.Trick.AnimationID, 0, 0f);

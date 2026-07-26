@@ -58,6 +58,11 @@ public class ConversationData
 
     public void AppendConversation(ConversationData otherConversation)
     {
+        if (otherConversation == null || otherConversation.Characters == null)
+        {
+            return;
+        }
+        
         Characters = Characters.Union(otherConversation.Characters).ToArray();
         ConversationEntries.AddRange(otherConversation.ConversationEntries);
     }

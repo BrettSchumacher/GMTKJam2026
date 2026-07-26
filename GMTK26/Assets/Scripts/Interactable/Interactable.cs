@@ -1,20 +1,39 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Interactable : MonoBehaviour
 {
+    public static List<Interactable> Interactives;
+    
     public NpcPlacement NpcPlacement;
     public bool OneTimeInteractable = false;
+    public bool DisableWhileWaitingForTrick = true;
+    public UnityEvent OnInteract;
     
     [SerializeField] protected string interactText;
 
     protected bool isPlayerInArea;
     private bool interacted = false;
 
+    private bool overrideInteractable = false;
+
+    private void OnEnable()
+    {
+        Interactives ??= new();
+        Interactives.Add(this);
+    }
+
+    private void OnDisable()
+    {
+        Interactives.Remove(this);
+    }
+
     protected void OnTriggerEnter(Collider other)
     {
-        if (OneTimeInteractable && interacted)
+        if (overrideInteractable || (OneTimeInteractable && interacted))
         {
             return;
         }
@@ -31,7 +50,7 @@ public class Interactable : MonoBehaviour
     // Probably don't need this, but I copied it from another project so why not.
     protected void OnTriggerStay(Collider other)
     {
-        if (OneTimeInteractable && interacted)
+        if (overrideInteractable || (OneTimeInteractable && interacted))
         {
             return;
         }
@@ -52,15 +71,22 @@ public class Interactable : MonoBehaviour
         {
             if (GameManager.gameManager.GetSelectedInteractableObj() == this)
             {
-                GameManager.gameManager.SetSelectedInteractableObj(null);
-                GameManager.gameManager.SetInteractText("");
-                isPlayerInArea = false;
+                HideText();
             }
         }
     }
 
+    private void HideText()
+    {
+        GameManager.gameManager.SetSelectedInteractableObj(null);
+        GameManager.gameManager.SetInteractText("");
+        isPlayerInArea = false;
+    }
+
     public virtual void TriggerAction()
     {
+        OnInteract?.Invoke();
+        
         if (NpcPlacement)
         {
             NpcPlacement.Interact();
@@ -71,15 +97,27 @@ public class Interactable : MonoBehaviour
         // Deactivate once we've gone through the conversation
         if (OneTimeInteractable)
         {
-            GameManager.gameManager.SetSelectedInteractableObj(null);
-            GameManager.gameManager.SetInteractText("");
-            isPlayerInArea = false;
+            HideText();
             enabled = false;
             var dampenField = GetComponent<DampenZone>();
             if (dampenField)
             {
                 dampenField.enabled = false;
             }
+        }
+    }
+
+    public void SetOverrideInteractable(bool interactable)
+    {
+        if (overrideInteractable == interactable)
+        {
+            return;
+        }
+
+        overrideInteractable = interactable;
+        if (overrideInteractable && isPlayerInArea)
+        {
+            HideText();
         }
     }
 

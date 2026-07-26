@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour
     InputAction interactAction;
 
     public int countdownInMin = 60;
+    public bool playIntro = true;
+    public GameObject HUD;
     private float countdownTimer = 60;
     [SerializeField] public TextMeshProUGUI countdownTimerText;
 
@@ -29,7 +31,8 @@ public class GameManager : MonoBehaviour
     private Interactable currentInteractable;
     [SerializeField] private GameObject interactHudObj;
     [SerializeField] private TextMeshProUGUI interactText;
-
+    private bool IsWaitingOnTrick;
+    private bool isPaused = false;
 
     private void Awake()
     {
@@ -49,12 +52,18 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         countdownTimer = (float) countdownInMin * 60;
+        countdownTimerText.text = String.Format("{0:00}",(Mathf.CeilToInt(countdownTimer / 60) - 1)) + ":" + String.Format("{0:00}", (Mathf.CeilToInt(countdownTimer % 60) - 1));
         SetupInteractInput();
         interactHudObj.SetActive(false);
 
         if (AudioManager.Instance)
         {
             AudioManager.PlayBackgroundMusic(MusicTracks.Background, 0.5f);
+        }
+
+        if (playIntro && IntroManager.Instance)
+        {
+            IntroManager.Instance.StartIntro();
         }
     }
 
@@ -69,8 +78,30 @@ public class GameManager : MonoBehaviour
         interactAction = playerInput.actions["Interact"];
     }
 
+    public void PauseGameplay(bool hideHud = false)
+    {
+        if (hideHud)
+        {
+            HUD?.SetActive(false);
+        }
+        isPaused = true;
+        AudioManager.PlayBackgroundMusic(MusicTracks.None);
+    }
+
+    public void UnpauseGameplay()
+    {
+        HUD?.SetActive(true);
+        isPaused = false;
+        AudioManager.PlayBackgroundMusic(MusicTracks.Background, 0.5f);
+    }
+
     void Update()
     {
+        if (isPaused)
+        {
+            return;
+        }
+        
         countdownTimer -= Time.deltaTime;
         countdownTimerText.text = String.Format("{0:00}",(Mathf.CeilToInt(countdownTimer / 60) - 1)) + ":" + String.Format("{0:00}", (Mathf.CeilToInt(countdownTimer % 60) - 1));
 
@@ -138,6 +169,24 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void SetWaitingForTrick(bool waiting)
+    {
+        IsWaitingOnTrick = waiting;
+
+        foreach (var interact in Interactable.Interactives)
+        {
+            if (interact && interact.DisableWhileWaitingForTrick)
+            {
+                interact.SetOverrideInteractable(waiting);
+            }
+        }
+    }
+
+    public bool GetIsWaitingForTrick()
+    {
+        return IsWaitingOnTrick;
+    }
+    
     public void SetNumPeopleToInviteText()
     {
         numPeopleToInviteText.text = "Invites left: " + numPeopleToInvite;

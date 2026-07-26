@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d58e3cee35f54b349a0f6ed375cb2652, type: 3}
   m_Name: PriestConversation
   m_EditorClassIdentifier: 
-  Conversation: {fileID: 0}
+  Conversation: {fileID: 4900000, guid: 43c5b73e5913e964b8d02738ac71481a, type: 3}
+  TrickCompleteDialogue: {fileID: 4900000, guid: 5145bf5da2a4cc0419fe44cbc5d56c6f, type: 3}
   WeddingItem: {fileID: 11400000, guid: 0c14aad83ef8b25448aa577dddb1b1cf, type: 2}
   Music: 3
   MusicVolume: 1

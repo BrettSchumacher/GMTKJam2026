@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -19,10 +20,12 @@ public class GameManager : MonoBehaviour
     private float countdownTimer = 60;
     [SerializeField] public TextMeshProUGUI countdownTimerText;
 
+    [SerializeField] public TextMeshProUGUI itemsListText;  // Text for wedding items that still must be obtained
+    [SerializeField] public TextMeshProUGUI currentTradeItemText;
+
     private Interactable currentInteractable;
     [SerializeField] private GameObject interactHudObj;
     [SerializeField] private TextMeshProUGUI interactText;
-
 
 
     private void Awake()
@@ -92,6 +95,33 @@ public class GameManager : MonoBehaviour
     public Interactable GetSelectedInteractableObj()
     {
         return currentInteractable;
+    }
+
+    // Text for wedding items that still must be obtained
+    public void SetItemsListText(Dictionary<string, WeddingItem> checklist)
+    {
+        string text = "Items for wedding:\n";
+        foreach(KeyValuePair<string, WeddingItem> item in checklist)
+        {
+            if (item.Value.obtained)
+            {
+                text += "<s>";
+            }
+            text += item.Value.item.ItemName;
+
+            if (item.Value.obtained)
+            {
+                text += "</s>";
+            }
+            text += "\n";
+        }
+
+        itemsListText.text = text;
+    }
+
+    public void SetCurrentTradeItemText(string text)
+    {
+        currentTradeItemText.text = "To trade: " + text;
     }
 
     public void SetInteractText(string text)

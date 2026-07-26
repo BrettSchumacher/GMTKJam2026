@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class IntroManager : MonoBehaviour
 {
@@ -18,6 +19,14 @@ public class IntroManager : MonoBehaviour
     public AudioClip EmergencyBroadcast;
     public float BroadcastDelay = 2f;
     public ConversationSO StartingConversation;
+    public float broadcastFadeInDur = 3f;
+    public AnimationCurve fadeInCurve;
+    public float broadcastFadeOutDur = 3f;
+    public AnimationCurve fadeOutCurve;
+    public Image fadeinoutImage;
+    public Image EmergencyBroadcastImage;
+    public float broadcastFadeBackInDur = 3f;
+    public AnimationCurve fadeBackInCurve;
 
     private AudioSource sirensSource;
     private AudioSource broadcastSource;
@@ -41,9 +50,8 @@ public class IntroManager : MonoBehaviour
             Debug.LogError("NO PLAYER");
             return;
         }
-        
-        SetupInput();
-        
+
+        StartCoroutine(FadeIn());
         GameManager.gameManager?.PauseGameplay(true);
 
         if (InputManager.Instance)
@@ -90,10 +98,11 @@ public class IntroManager : MonoBehaviour
 
     void SkipEmergencyBroadcast(InputAction.CallbackContext context)
     {
+        StartCoroutine(FadeOut());
         sirensSource?.Stop();
         broadcastSource?.Stop();
         StopAllCoroutines();
-        StartIntroConversation();
+        Transition();
     }
 
     void RemoveInput()
@@ -131,12 +140,17 @@ public class IntroManager : MonoBehaviour
         sirensSource = AudioManager.PlayAudio(Sirens, player.position, player);
         if (sirensSource)
         {
-            StartCoroutine(PlaySirens(false, StartIntroConversation));
+            StartCoroutine(PlaySirens(false, Transition));
         }
         else
         {
-            StartIntroConversation();
+            Transition();
         }
+    }
+
+    void Transition()
+    {
+        StartCoroutine(FadeOut());
     }
 
     void StartIntroConversation()
@@ -176,6 +190,58 @@ public class IntroManager : MonoBehaviour
         }
         
         Debug.Log("FINISHED");
+    }
+
+    IEnumerator FadeIn()
+    {
+        fadeinoutImage.color = new Color(0f, 0f, 0f, 1f);
+        float time = 0f;
+        while (time < broadcastFadeInDur)
+        {
+            time += Time.deltaTime;
+            float t = time / broadcastFadeInDur;
+            float alpha = fadeInCurve.Evaluate(t);
+            fadeinoutImage.color = new Color(0f, 0f, 0f, alpha);
+            yield return null;
+        }
+        
+        fadeinoutImage.color = new Color(0f, 0f, 0f, 0f);
+        SetupInput();
+    }
+
+    IEnumerator FadeOut()
+    {
+        fadeinoutImage.color = new Color(0f, 0f, 0f, 0f);
+        float time = 0f;
+        while (time < broadcastFadeOutDur)
+        {
+            time += Time.deltaTime;
+            float t = time / broadcastFadeOutDur;
+            float alpha = fadeOutCurve.Evaluate(t);
+            fadeinoutImage.color = new Color(0f, 0f, 0f, alpha);
+            yield return null;
+        }
+        
+        fadeinoutImage.color = new Color(0f, 0f, 0f, 1f);
+        StartCoroutine(FadeBackIn());
+    }
+
+    IEnumerator FadeBackIn()
+    {
+        fadeinoutImage.color = new Color(0f, 0f, 0f, 1f);
+        IntroCanvas.SetActive(false);
+        float time = 0f;
+        while (time < broadcastFadeBackInDur)
+        {
+            time += Time.deltaTime;
+            float t = time / broadcastFadeBackInDur;
+            float alpha = fadeBackInCurve.Evaluate(t);
+            fadeinoutImage.color = new Color(0f, 0f, 0f, alpha);
+            yield return null;
+        }
+        
+        fadeinoutImage.color = new Color(0f, 0f, 0f, 0f);
+        StartIntroConversation();
     }
 
     IEnumerator ExecuteAfterDelay(float delay, Action callback)

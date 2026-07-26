@@ -46,9 +46,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IntroCanvas: {fileID: 8380324126290454969}
-  ObjectsToHideOnEnd: []
+  ObjectsToHideOnEnd:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   Sirens: {fileID: 8300000, guid: 3f27f357e833b2248b33f98bb4850750, type: 3}
-  introSirensDuration: 8
+  introSirensDuration: 12
   introSirensVolume:
     serializedVersion: 2
     m_Curve:
@@ -91,7 +94,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  outroSirensDuration: 8
+  outroSirensDuration: 7
   outroSirensVolume:
     serializedVersion: 2
     m_Curve:
@@ -135,7 +138,112 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   EmergencyBroadcast: {fileID: 8300000, guid: 6a093175c7d78bb47848fa07d4e2e680, type: 3}
+  BroadcastDelay: 2
   StartingConversation: {fileID: 11400000, guid: 9ae26b039b09c574e85e4ba218ba26fe, type: 2}
+  broadcastFadeInDur: 5
+  fadeInCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: -0.0013740733
+      value: 0.9991399
+      inSlope: -0.03062408
+      outSlope: -0.03062408
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.040652912
+    - serializedVersion: 3
+      time: 0.6181043
+      value: 0.9232837
+      inSlope: -0.41676632
+      outSlope: -0.41676632
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.066595234
+    - serializedVersion: 3
+      time: 1.0012207
+      value: 0.004055023
+      inSlope: -1.8559315
+      outSlope: -1.8559315
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.003957671
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  broadcastFadeOutDur: 2
+  fadeOutCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 5.4431753
+      outSlope: 5.4431753
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.029805256
+    - serializedVersion: 3
+      time: 0.2765203
+      value: 0.76684976
+      inSlope: 1.2033697
+      outSlope: 1.2033697
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  fadeinoutImage: {fileID: 0}
+  EmergencyBroadcastImage: {fileID: 8800752351876844051}
+  broadcastFadeBackInDur: 1
+  fadeBackInCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: -0.0013740733
+      value: 0.9991399
+      inSlope: -0.03062408
+      outSlope: -0.03062408
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.040652912
+    - serializedVersion: 3
+      time: 0.6181043
+      value: 0.9232837
+      inSlope: -0.41676632
+      outSlope: -0.41676632
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.066595234
+    - serializedVersion: 3
+      time: 1.0012207
+      value: 0.004055023
+      inSlope: -1.8559315
+      outSlope: -1.8559315
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.003957671
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &4676625647405217095
 GameObject:
   m_ObjectHideFlags: 0

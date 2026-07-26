@@ -91,7 +91,7 @@ MonoBehaviour:
   drag: 2
   groundNormalMinY: 0.1
   groundCheckDistance: 0.3
-  jumpForce: 8
+  jumpForce: 12
   gravity: -20
   slideThresholdY: 0.9
   visualMesh: {fileID: 388569425629008353}
@@ -134,6 +134,7 @@ MonoBehaviour:
   dampenTimeout: 0.1
   dampenedSpeedFactor: 0.2
   cameraShake: {fileID: 0}
+  velocity: {x: 0, y: 0, z: 0}
 --- !u!114 &7543909229963701920
 MonoBehaviour:
   m_ObjectHideFlags: 0

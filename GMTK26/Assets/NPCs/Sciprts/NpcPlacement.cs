@@ -15,6 +15,11 @@ public class NpcPlacement : MonoBehaviour
         NpcPlacements.Add(this);
     }
 
+    private void Start()
+    {
+        GameManager.gameManager.IncrementPeopleToInviteCount();
+    }
+
     private void OnDestroy()
     {
         NpcPlacements.Remove(this);

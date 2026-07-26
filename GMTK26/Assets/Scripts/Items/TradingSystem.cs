@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class TradingSystem : MonoBehaviour
 {
@@ -33,6 +34,9 @@ public class TradingSystem : MonoBehaviour
         {
             weddingItemChecklist.Add(item.ItemName, new WeddingItem(item));
         }
+
+        GetComponent<GameManager>().SetItemsListText(weddingItemChecklist);
+        GetComponent<GameManager>().SetCurrentTradeItemText(GetCurrentTradableItem().ItemName);
     }
 
     public ItemsSO GetCurrentTradableItem()
@@ -53,6 +57,10 @@ public class TradingSystem : MonoBehaviour
 
         weddingItemChecklist[weddingItem.ItemName].obtained = true;
         numWeddingItemsObtained++;
+
+        GetComponent<GameManager>().SetItemsListText(weddingItemChecklist);
+        GetComponent<GameManager>().SetCurrentTradeItemText(GetCurrentTradableItem().ItemName);
+        GetComponent<GameManager>().DecrementPeopleToInviteCount();
     }
 
     public int GetNumWeddingItemsObtained()
@@ -64,6 +72,14 @@ public class TradingSystem : MonoBehaviour
     {
         return weddingItemChecklist.Values
             .Where(weddingItem => weddingItem.obtained)
+            .Select(weddingItem => weddingItem.item)
+            .ToList();
+    }
+
+    public List<ItemsSO> GetMissingWeddingItems()
+    {
+        return weddingItemChecklist.Values
+            .Where(weddingItem => !weddingItem.obtained)
             .Select(weddingItem => weddingItem.item)
             .ToList();
     }

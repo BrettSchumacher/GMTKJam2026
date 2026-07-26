@@ -52,8 +52,8 @@ public class SkateboardController : MonoBehaviour
 
     [Header("Grinding")]
     public float grindAttachRadius = 1f;
-    public float minGrindSpeed = 4f;
-    public float maxGrindSpeed = 14f;
+    public float minGrindSpeed = 10f;
+    public float maxGrindSpeed = 15f;
     public float grindReattachDelay = 0.3f;
     public float grindTurnSpeed = 8f;
 

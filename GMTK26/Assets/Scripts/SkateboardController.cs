@@ -71,7 +71,7 @@ public class SkateboardController : MonoBehaviour
     InputAction jumpAction;
     InputAction grindAction;
 
-    Vector3 velocity;
+    public Vector3 velocity;
     bool isGrounded;
     bool wasGrounded;
     bool jumpQueued;

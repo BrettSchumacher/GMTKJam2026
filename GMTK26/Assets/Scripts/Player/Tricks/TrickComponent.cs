@@ -74,9 +74,16 @@ public class TrickComponent : MonoBehaviour
     private InputAction flipAction;
     private InputAction grindAction;
 
+    private Animator skateboardAnimator;
+
     private void Awake()
     {
         LoadTricks();
+    }
+
+    private void Start()
+    {
+        skateboardAnimator = GetComponent<Animator>();
     }
 
     private void OnEnable()
@@ -134,6 +141,8 @@ public class TrickComponent : MonoBehaviour
         }
         
         Debug.Log($"Did a {TrickToDo.Trick.GetDisplayName(TrickToDo.TapCount)} (AnimID: {TrickToDo.Trick.GetAnimationID(TrickToDo.TapCount)}, Points: {TrickToDo.Trick.GetPointValue(TrickToDo.TapCount)}");
+
+        skateboardAnimator.Play(TrickToDo.Trick.AnimationID, 0, 0f);
     }
 
 

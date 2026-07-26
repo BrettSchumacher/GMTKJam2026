@@ -15,8 +15,12 @@ MonoBehaviour:
   TrickName: Fingerflip
   InputString: 0500000005000000
   Button: 1
-  ButtonPresses: 1
-  AnimationID: 
+  AnimationID: Heelflip
   PointValue: 100
   Holdable: 0
   SecretTrick: 0
+  AllowMultiTap: 0
+  multiTapOverrides: []
+  maxTaps: 3
+  lastAssetName: Fingerflip
+  lastTrickName: Fingerflip

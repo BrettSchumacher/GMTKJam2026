@@ -50,7 +50,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tradingSystem: {fileID: 3152982928357982287}
-  countdownInMin: 60
+  countdownInMin: 65
+  playIntro: 1
+  HUD: {fileID: 2204643917669419660}
   countdownTimerText: {fileID: 1948118292248608448}
   itemsListText: {fileID: 4252405924511284618}
   currentTradeItemText: {fileID: 7089542768936152442}
@@ -534,6 +536,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &2204643917669419660 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5323989524493301198, guid: cb6fb9101a89a4547a368529adb7c648, type: 3}
+  m_PrefabInstance: {fileID: 6303609793961246530}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &2951043016934648349 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 9191528293532357983, guid: cb6fb9101a89a4547a368529adb7c648, type: 3}

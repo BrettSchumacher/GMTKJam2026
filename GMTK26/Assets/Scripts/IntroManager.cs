@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class IntroManager : MonoBehaviour
 {
@@ -15,9 +16,12 @@ public class IntroManager : MonoBehaviour
     public float outroSirensDuration;
     public AnimationCurve outroSirensVolume;
     public AudioClip EmergencyBroadcast;
+    public float BroadcastDelay = 2f;
     public ConversationSO StartingConversation;
 
     private AudioSource sirensSource;
+    private AudioSource broadcastSource;
+    private InputAction skipInputAction;
 
     private void Awake()
     {
@@ -38,7 +42,9 @@ public class IntroManager : MonoBehaviour
             return;
         }
         
-        GameManager.gameManager?.PauseGameplay();
+        SetupInput();
+        
+        GameManager.gameManager?.PauseGameplay(true);
 
         if (InputManager.Instance)
         {
@@ -46,23 +52,75 @@ public class IntroManager : MonoBehaviour
         }
         
         IntroCanvas.SetActive(true);
+        foreach (var obj in ObjectsToHideOnEnd)
+        {
+            obj.SetActive(true);
+        }
         
         Transform player = PlayerManager.Instance.transform;
         sirensSource = AudioManager.PlayAudio(Sirens, player.position, player);
         if (sirensSource)
         {
-            StartCoroutine(PlaySirens(true, PlayEmergencyBroadcast));
+            StartCoroutine(PlaySirens(true, null));
         }
-        else
+       
+        StartCoroutine(ExecuteAfterDelay(BroadcastDelay, PlayEmergencyBroadcast));
+    }
+
+    void SetupInput()
+    {
+        if (!PlayerManager.Instance)
         {
-            PlayEmergencyBroadcast();
+            return;
+        }
+
+        var inputComponent = PlayerManager.Instance.InputComponent;
+
+        if (!inputComponent)
+        {
+            return;
+        }
+
+        skipInputAction = inputComponent.actions.FindAction("AdvanceDialogue");
+        if (skipInputAction != null)
+        {
+            skipInputAction.performed += SkipEmergencyBroadcast;
+        }
+    }
+
+    void SkipEmergencyBroadcast(InputAction.CallbackContext context)
+    {
+        sirensSource?.Stop();
+        broadcastSource?.Stop();
+        StopAllCoroutines();
+        StartIntroConversation();
+    }
+
+    void RemoveInput()
+    {
+        if (!PlayerManager.Instance)
+        {
+            return;
+        }
+
+        var inputComponent = PlayerManager.Instance.InputComponent;
+
+        if (!inputComponent)
+        {
+            return;
+        }
+
+        skipInputAction = inputComponent.actions.FindAction("AdvanceDialogue");
+        if (skipInputAction != null)
+        {
+            skipInputAction.performed -= SkipEmergencyBroadcast;
         }
     }
 
     void PlayEmergencyBroadcast()
     {
         Transform player = PlayerManager.Instance.transform;
-        AudioManager.PlayAudio(EmergencyBroadcast, player.position, player);
+        broadcastSource = AudioManager.PlayAudio(EmergencyBroadcast, player.position, player);
 
         StartCoroutine(ExecuteAfterDelay(EmergencyBroadcast.length, StartEndSirens));
     }
@@ -83,6 +141,8 @@ public class IntroManager : MonoBehaviour
 
     void StartIntroConversation()
     {
+        RemoveInput();
+        
         IntroCanvas.SetActive(false);
 
         if (InputManager.Instance)

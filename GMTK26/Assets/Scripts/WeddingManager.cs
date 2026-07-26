@@ -33,6 +33,8 @@ public class WeddingManager : MonoBehaviour
             Debug.LogError("Already started wedding");
             return;
         }
+        
+        GameManager.gameManager?.PauseGameplay(true);
 
         weddingStarted = true;
         

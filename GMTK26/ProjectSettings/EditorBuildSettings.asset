@@ -11,5 +11,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Blockout.unity
     guid: 3f9217e98b23dac4993ff1c820d04aca
+  - enabled: 1
+    path: Assets/Scenes/BadEnding.unity
+    guid: 47a147a50c8b06045b32f076612093b7
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using AYellowpaper.SerializedCollections;
 using Cinemachine;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class WeddingManager : MonoBehaviour
 {
@@ -14,6 +15,11 @@ public class WeddingManager : MonoBehaviour
     public TextAsset NoWeddingItemsConvo;
     public TextAsset NotAllWeddingItemsConvo;
     public TextAsset AllWeddingItemsConvo;
+
+    public Image Whiteout;
+    public AudioClip Rumble;
+    public AnimationCurve RumbleVolume;
+    public float WhiteoutTime;
 
     public float IntroToVowsDelay = 2f;
 
@@ -28,6 +34,7 @@ public class WeddingManager : MonoBehaviour
     private bool weddingStarted = false;
     private ConversationData FullWeddingConversation;
     private ConversationData WeddingVowsConversation;
+    private AudioSource RumbleAudio;
 
     public void BeginWedding()
     {
@@ -120,8 +127,16 @@ public class WeddingManager : MonoBehaviour
         {
             CameraController.Instance.PushCamera(WeddingCamEnd);
         }
-        
-        // Do ending stuff here
+
+        Transform player = PlayerManager.Instance.transform;
+        RumbleAudio = AudioManager.PlayAudio(Rumble, player.position, player);
+
+        StartCoroutine(DoWhiteout());
+    }
+
+    private void OnWhiteoutFinished()
+    {
+        GameManager.gameManager?.GoToMainMenu();
     }
 
     private void PopulateIntroConversation()
@@ -185,5 +200,21 @@ public class WeddingManager : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
         callback?.Invoke();
+    }
+
+    IEnumerator DoWhiteout()
+    {
+        float time = 0f;
+        while (time < WhiteoutTime)
+        {
+            time += Time.deltaTime;
+            float alpha = time / WhiteoutTime;
+            Whiteout.color = new Color(1f, 1f, 1f, alpha);
+            RumbleAudio.volume = RumbleVolume.Evaluate(alpha);
+            
+            yield return null;
+        }
+        
+        OnWhiteoutFinished();
     }
 }

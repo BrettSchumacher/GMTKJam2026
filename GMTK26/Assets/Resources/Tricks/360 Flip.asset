@@ -16,7 +16,7 @@ MonoBehaviour:
   InputString: 0100000001000000
   Button: 1
   AnimationID: Pop Shove-it
-  PointValue: 100
+  PointValue: 500
   Holdable: 0
   SecretTrick: 0
   AllowMultiTap: 0

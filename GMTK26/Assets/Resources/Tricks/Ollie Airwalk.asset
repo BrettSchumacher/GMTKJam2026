@@ -16,7 +16,7 @@ MonoBehaviour:
   InputString: 0300000003000000
   Button: 1
   AnimationID: Kickflip
-  PointValue: 110
+  PointValue: 500
   Holdable: 0
   SecretTrick: 0
   AllowMultiTap: 0

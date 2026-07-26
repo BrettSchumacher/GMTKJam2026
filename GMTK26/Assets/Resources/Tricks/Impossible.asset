@@ -19,8 +19,12 @@ MonoBehaviour:
   PointValue: 100
   Holdable: 0
   SecretTrick: 0
-  AllowMultiTap: 0
-  multiTapOverrides: []
+  AllowMultiTap: 1
+  multiTapOverrides:
+  - NameOverride: Double Impossible
+    PointOverride: 500
+  - NameOverride: Triple Impossible
+    PointOverride: 1000
   maxTaps: 3
   lastAssetName: Impossible
   lastTrickName: Impossible

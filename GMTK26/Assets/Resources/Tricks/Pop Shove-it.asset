@@ -19,8 +19,12 @@ MonoBehaviour:
   PointValue: 100
   Holdable: 0
   SecretTrick: 0
-  AllowMultiTap: 0
-  multiTapOverrides: []
+  AllowMultiTap: 1
+  multiTapOverrides:
+  - NameOverride: 360 Shove-it
+    PointOverride: 500
+  - NameOverride: 540 Shove-it
+    PointOverride: 1000
   maxTaps: 3
   lastAssetName: Pop Shove-it
   lastTrickName: Pop Shove-it

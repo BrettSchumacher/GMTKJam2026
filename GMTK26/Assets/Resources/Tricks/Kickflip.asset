@@ -22,9 +22,9 @@ MonoBehaviour:
   AllowMultiTap: 1
   multiTapOverrides:
   - NameOverride: Double Kickflip
-    PointOverride: 200
+    PointOverride: 500
   - NameOverride: Triple Kickflip
-    PointOverride: 300
+    PointOverride: 1000
   maxTaps: 3
   lastAssetName: Kickflip
   lastTrickName: Kickflip

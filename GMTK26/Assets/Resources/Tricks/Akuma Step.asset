@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Akuma Step
   m_EditorClassIdentifier: 
   TrickName: Akuma Step
-  InputString: 
-  Button: 4
+  InputString: 010000000200000005000000010000000200000005000000
+  Button: 0
   AnimationID: Kickflip
-  PointValue: 100
+  PointValue: 1500
   Holdable: 0
   SecretTrick: 0
   AllowMultiTap: 0

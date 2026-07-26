@@ -794,6 +794,8 @@ MonoBehaviour:
   speechPitch: 1
   speechPitchRandomizationRange: 0.25
   fromDM: 0
+  autoStart: 0
+  autoStartString: 
 --- !u!1 &2299244512892122075
 GameObject:
   m_ObjectHideFlags: 0
@@ -955,6 +957,8 @@ MonoBehaviour:
   speechPitch: 1
   speechPitchRandomizationRange: 0.25
   fromDM: 0
+  autoStart: 0
+  autoStartString: 
 --- !u!1 &2534933340539517012
 GameObject:
   m_ObjectHideFlags: 0
@@ -1512,6 +1516,8 @@ MonoBehaviour:
   speechPitch: 1
   speechPitchRandomizationRange: 0.25
   fromDM: 0
+  autoStart: 0
+  autoStartString: 
 --- !u!1 &3283944859311858144
 GameObject:
   m_ObjectHideFlags: 0
@@ -2376,7 +2382,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 5519337128774643523}
   m_Direction: 0
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.99999994
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -2877,6 +2883,8 @@ MonoBehaviour:
   speechPitch: 1
   speechPitchRandomizationRange: 0.25
   fromDM: 0
+  autoStart: 0
+  autoStartString: 
 --- !u!1 &6313186877784515054
 GameObject:
   m_ObjectHideFlags: 0
@@ -4087,6 +4095,8 @@ MonoBehaviour:
   speechPitch: 1
   speechPitchRandomizationRange: 0.25
   fromDM: 0
+  autoStart: 0
+  autoStartString: 
 --- !u!1 &8572222986476670538
 GameObject:
   m_ObjectHideFlags: 0

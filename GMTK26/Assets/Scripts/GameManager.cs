@@ -200,17 +200,21 @@ public class GameManager : MonoBehaviour
 
     public void SetTrickText(string trickName, float pointsGained)
     {
-        trickText.text = trickName;
+        string currentTrickString = trickText.text;
 
-        string prefix = "";
+
         if (pointIncrease > 0)
         {
-            prefix = "+ ";
+            trickText.text = currentTrickString + " + " + trickName; ;
+        }
+        else
+        {
+            trickText.text = trickName;
         }
 
-        pointIncrease += (int) pointsGained;
+            pointIncrease += (int)pointsGained;
 
-        trickScoreText.text = prefix + pointIncrease;
+        trickScoreText.text = pointIncrease.ToString();
 
         trickTimer = trickTextDisplayTime;
     }

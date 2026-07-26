@@ -40,12 +40,21 @@ public class TradingSystem : MonoBehaviour
 
     public ItemsSO GetCurrentTradableItem()
     {
+        if (currentTradableItemIndex < 0 || currentTradableItemIndex >= tradableItemDatabase.items.Count)
+        {
+            return null;
+        }
        return tradableItemDatabase.items[currentTradableItemIndex];
     }
 
     public ItemsSO GetNextTradableItem()
     {
-        return tradableItemDatabase.items[currentTradableItemIndex + 1];
+        int nextIndex = currentTradableItemIndex + 1;
+        if (nextIndex < 0 || nextIndex >= tradableItemDatabase.items.Count)
+        {
+            return null;
+        }
+        return tradableItemDatabase.items[nextIndex];
     }
 
     public void TradeItem(ItemsSO weddingItem)

@@ -61,7 +61,7 @@ MonoBehaviour:
   numPeopleToInviteText: {fileID: 2951043016934648349}
   interactHudObj: {fileID: 5520903016578244148}
   interactText: {fileID: 9014552545570448109}
-  trickText: {fileID: 2979727854392482750}
+  trickText: {fileID: 4923971398346475118}
   trickScoreText: {fileID: 8038739495880382028}
   trickTextDisplayTime: 1.5
 --- !u!114 &3152982928357982287
@@ -604,9 +604,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2979727854392482750 stripped
+--- !u!114 &4252405924511284618 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 9088533462404375804, guid: cb6fb9101a89a4547a368529adb7c648, type: 3}
+  m_CorrespondingSourceObject: {fileID: 7816418394314982088, guid: cb6fb9101a89a4547a368529adb7c648, type: 3}
   m_PrefabInstance: {fileID: 6303609793961246530}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
@@ -615,9 +615,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &4252405924511284618 stripped
+--- !u!114 &4923971398346475118 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7816418394314982088, guid: cb6fb9101a89a4547a368529adb7c648, type: 3}
+  m_CorrespondingSourceObject: {fileID: 1382497692782672172, guid: cb6fb9101a89a4547a368529adb7c648, type: 3}
   m_PrefabInstance: {fileID: 6303609793961246530}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}

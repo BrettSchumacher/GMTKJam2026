@@ -204,6 +204,32 @@ MonoBehaviour:
   slideThresholdY: 0.9
   visualMesh: {fileID: 388569425629008353}
   tiltSpeed: 10
+  minFov: 60
+  maxFov: 75
+  fovCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   maxAirPitch: 20
   airPitchVelocityRange: 10
   maxTurnLean: 10

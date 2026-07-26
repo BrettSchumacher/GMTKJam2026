@@ -14,6 +14,8 @@ public class PlayerManager : MonoBehaviour
     [HideInInspector] public PlayerInput InputComponent;
     [HideInInspector] public List<ItemsSO> AcquiredWeddingItems;
 
+    private List<Action> OnNextTrickCallbacks = new();
+
     private void Awake()
     {
         if (Instance)
@@ -26,6 +28,21 @@ public class PlayerManager : MonoBehaviour
 
         SkateboardController = GetComponent<SkateboardController>();
         InputComponent = GetComponent<PlayerInput>();
+    }
+
+    public void RegisterNextTrickCallback(Action callback)
+    {
+        OnNextTrickCallbacks.Add(callback);
+    }
+
+    public void HandleTrickCompleted()
+    {
+        foreach (var callback in OnNextTrickCallbacks)
+        {
+            callback?.Invoke();
+        }
+
+        OnNextTrickCallbacks.Clear();
     }
 
     // Start is called before the first frame update

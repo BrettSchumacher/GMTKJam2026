@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26e8b6614c734624b847fb73afef3c58, type: 3}
   m_Name: Car
   m_EditorClassIdentifier: 
-  ItemName: Car
+  ItemName: 1987 Honda Accord
   Value: 26000
   Image: {fileID: 0}
   forWedding: 0

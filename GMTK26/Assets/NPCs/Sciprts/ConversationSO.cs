@@ -6,6 +6,7 @@ using UnityEngine;
 public class ConversationSO : ScriptableObject
 {
     public TextAsset Conversation;
+    public TextAsset TrickCompleteDialogue;
     public ItemsSO WeddingItem;
     public MusicTracks Music;
     public float MusicVolume;
@@ -15,6 +16,16 @@ public class ConversationSO : ScriptableObject
         if (Conversation)
         {
             return DialogueHelpers.LoadConversationFromCsvString(Conversation.text);
+        }
+
+        return new ConversationData();
+    }
+
+    public ConversationData GetPostConversationData()
+    {
+        if (TrickCompleteDialogue)
+        {
+            return DialogueHelpers.LoadConversationFromCsvString(TrickCompleteDialogue.text);
         }
 
         return new ConversationData();

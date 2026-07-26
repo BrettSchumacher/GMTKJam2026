@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: ChetConversation
   m_EditorClassIdentifier: 
   Conversation: {fileID: 4900000, guid: 1df9955429cc1a54499e51020eb79a45, type: 3}
+  TrickCompleteDialogue: {fileID: 4900000, guid: aba298d38961ffd47a00bc661b93bc84, type: 3}
   WeddingItem: {fileID: 11400000, guid: 74f06dd9dd3ddaa4bba27f29f79e8396, type: 2}
   Music: 3
   MusicVolume: 1

@@ -22,7 +22,8 @@ public class GameManager : MonoBehaviour
     private Interactable currentInteractable;
     [SerializeField] private GameObject interactHudObj;
     [SerializeField] private TextMeshProUGUI interactText;
-
+    private bool IsWaitingOnTrick;
+    private bool isPaused = false;
 
 
     private void Awake()
@@ -43,12 +44,18 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         countdownTimer = (float) countdownInMin * 60;
+        countdownTimerText.text = String.Format("{0:00}",(Mathf.CeilToInt(countdownTimer / 60) - 1)) + ":" + String.Format("{0:00}", (Mathf.CeilToInt(countdownTimer % 60) - 1));
         SetupInteractInput();
         interactHudObj.SetActive(false);
 
         if (AudioManager.Instance)
         {
             AudioManager.PlayBackgroundMusic(MusicTracks.Background, 0.5f);
+        }
+
+        if (IntroManager.Instance)
+        {
+            IntroManager.Instance.StartIntro();
         }
     }
 
@@ -63,8 +70,25 @@ public class GameManager : MonoBehaviour
         interactAction = playerInput.actions["Interact"];
     }
 
+    public void PauseGameplay()
+    {
+        isPaused = true;
+        AudioManager.PlayBackgroundMusic(MusicTracks.None);
+    }
+
+    public void UnpauseGameplay()
+    {
+        isPaused = false;
+        AudioManager.PlayBackgroundMusic(MusicTracks.Background, 0.5f);
+    }
+
     void Update()
     {
+        if (isPaused)
+        {
+            return;
+        }
+        
         countdownTimer -= Time.deltaTime;
         countdownTimerText.text = String.Format("{0:00}",(Mathf.CeilToInt(countdownTimer / 60) - 1)) + ":" + String.Format("{0:00}", (Mathf.CeilToInt(countdownTimer % 60) - 1));
 
@@ -103,5 +127,23 @@ public class GameManager : MonoBehaviour
         {
             interactHudObj.SetActive(false);
         }
+    }
+
+    public void SetWaitingForTrick(bool waiting)
+    {
+        IsWaitingOnTrick = waiting;
+
+        foreach (var interact in Interactable.Interactives)
+        {
+            if (interact && interact.DisableWhileWaitingForTrick)
+            {
+                interact.SetOverrideInteractable(waiting);
+            }
+        }
+    }
+
+    public bool GetIsWaitingForTrick()
+    {
+        return IsWaitingOnTrick;
     }
 }

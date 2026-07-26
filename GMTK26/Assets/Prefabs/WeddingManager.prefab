@@ -1,0 +1,66 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &44529466347601924
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 455513885820310985}
+  - component: {fileID: 5469170365613220832}
+  m_Layer: 0
+  m_Name: WeddingManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &455513885820310985
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 44529466347601924}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 114.97768, y: 9.758528, z: 44.56043}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5469170365613220832
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 44529466347601924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73a27d03c2d87334fbe3c4c7ecb6e961, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  WeddingIntroConvo: {fileID: 4900000, guid: 1ca1e79212045fd40aeff101245d2c00, type: 3}
+  WeddingMainConvo: {fileID: 4900000, guid: c83069fede882b847a26b7d7f24f82bb, type: 3}
+  NoWeddingItemsConvo: {fileID: 4900000, guid: b8a206c6ccd048f4f9a9037ef28e9dda, type: 3}
+  NotAllWeddingItemsConvo: {fileID: 4900000, guid: f4cacc4bb6527b74fbeeaca215c55453, type: 3}
+  AllWeddingItemsConvo: {fileID: 4900000, guid: dfbc4cbaf8cb60546befff6d1057c437, type: 3}
+  WeddingCamIntro: {fileID: 0}
+  WeddingCamVows: {fileID: 0}
+  WeddingCamEnd: {fileID: 0}
+  ItemToWeddingDialogue:
+    _serializedList:
+    - Key: {fileID: 11400000, guid: 74f06dd9dd3ddaa4bba27f29f79e8396, type: 2}
+      Value: {fileID: 4900000, guid: 85188afad79c4c14d9846fec8f5d662e, type: 3}
+    - Key: {fileID: 11400000, guid: 7d02b0fa128a3f04db0c43e18c2ad48b, type: 2}
+      Value: {fileID: 4900000, guid: 77a0b97bd4ee04248b6e13819272d79a, type: 3}
+    - Key: {fileID: 11400000, guid: dbdc1a59746fa864fbaf4dae7ace3576, type: 2}
+      Value: {fileID: 4900000, guid: 9b089a3ac5f023e43bba20fce6c42949, type: 3}
+    - Key: {fileID: 11400000, guid: 0c14aad83ef8b25448aa577dddb1b1cf, type: 2}
+      Value: {fileID: 4900000, guid: 700bd9542ac88a9488e1c76b69b92c73, type: 3}
+    - Key: {fileID: 11400000, guid: 891aede46ae8042468d9f6ca78368923, type: 2}
+      Value: {fileID: 4900000, guid: 8932019d95637d0488daa37b045b8bc2, type: 3}

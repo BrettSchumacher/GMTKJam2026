@@ -14,7 +14,10 @@ public enum MusicTracks
     Dialogue_Bright,
     Dialogue_Heavy,
     Pause,
-    Ending
+    Wedding_Intro,
+    Wedding_Vows,
+    DoATrick,
+    None
 }
 public enum Sounds
 {
@@ -62,6 +65,12 @@ public class AudioManager : MonoBehaviour
         if(Instance.MusicSource == null)
         {
             Debug.LogError("No music source set");
+            return;
+        }
+
+        if (track == global::MusicTracks.None)
+        {
+            Instance.MusicSource.Stop();
             return;
         }
 
@@ -138,10 +147,53 @@ public class AudioManager : MonoBehaviour
 
         Instance.StartCoroutine(DestroyAudioObj(audio, delay + clip.length + 0.2f));
     }
+    
+    public static AudioSource PlayAudio(AudioClip clip, Vector3 playAt, Transform attachTo = null, float delay = 0f, float pitch = 1f, bool stopWhenDestroyed = false)
+    {
+        if (!Instance)
+        {
+            Debug.LogError("No AudioManager instance found");
+            return null;
+        }
+
+        GameObject audio = Instantiate(Instance.audioPrefab, playAt, Quaternion.identity);
+        audio.name = clip.name;
+
+        if (attachTo)
+        {
+            audio.GetComponent<AudioTrackObject>()?.Initialize(playAt, attachTo, stopWhenDestroyed);
+        }
+
+        AudioSource audioSource = audio.GetComponent<AudioSource>();
+        if (!audioSource)
+        {
+            Debug.LogError("Audio prefab has no audiosource");
+            return null;
+        }
+
+        audioSource.pitch = pitch;
+        audioSource.clip = clip;
+        if (delay > 0f)
+        {
+            audioSource.PlayDelayed(delay);
+        }
+        else
+        {
+            audioSource.Play();
+        }
+        
+        Instance.StartCoroutine(DestroyAudioObj(audio, delay + clip.length + 0.2f));
+
+        return audioSource;
+    }
+    
     static IEnumerator DestroyAudioObj(GameObject audio, float delay)
     {
         yield return new WaitForSeconds(delay);
 
-        Destroy(audio);
+        if (audio)
+        {
+            Destroy(audio);
+        }
     }
 }

@@ -15,7 +15,8 @@ public class WeddingManager : MonoBehaviour
     public TextAsset AllWeddingItemsConvo;
 
     [Header("Visuals")] 
-    public CinemachineVirtualCamera WeddingCamMain;
+    public CinemachineVirtualCamera WeddingCamIntro;
+    public CinemachineVirtualCamera WeddingCamVows;
     public CinemachineVirtualCamera WeddingCamEnd;
     
     [SerializedDictionary("Item", "Conversation")]
@@ -23,6 +24,7 @@ public class WeddingManager : MonoBehaviour
 
     private bool weddingStarted = false;
     private ConversationData FullWeddingConversation;
+    private ConversationData WeddingVowsConversation;
 
     public void BeginWedding()
     {
@@ -34,7 +36,7 @@ public class WeddingManager : MonoBehaviour
 
         weddingStarted = true;
         
-        // start wedding audio
+        AudioManager.PlayBackgroundMusic(MusicTracks.Wedding_Intro, 0.5f);
         // Maybe set player position
 
         if (InputManager.Instance)
@@ -42,50 +44,79 @@ public class WeddingManager : MonoBehaviour
             InputManager.Instance.PushInputState(InputState.Cutscene);
         }
         
-        SetWeddingCamera();
+        SetIntroWeddingCamera();
     }
 
-    private void SetWeddingCamera()
+    private void SetIntroWeddingCamera()
     {
-        if (CameraController.Instance && WeddingCamMain)
+        if (CameraController.Instance && WeddingCamIntro)
         {
-            CameraController.Instance.PushCamera(WeddingCamMain);
+            CameraController.Instance.PushCamera(WeddingCamIntro);
         }
+        
         // probably convert to coroutine and wait for anim to finish
-        StartWeddingDialogue();
+        StartIntroWeddingDialogue();
     }
 
-    private void StartWeddingDialogue()
+    private void StartIntroWeddingDialogue()
     {
-        PopulateConversation();
+        PopulateIntroConversation();
 
         if (!DialogueManager.Instance)
         {
             Debug.LogError("No dialogue manager found");
-            OnWeddingDialogueFinished();
+            OnIntroWeddingDialogueFinished();
         }
         else if (FullWeddingConversation.ConversationEntries.Count == 0)
         {
             Debug.LogError("No wedding conversation filled");
-            OnWeddingDialogueFinished();
+            OnIntroWeddingDialogueFinished();
         }
         else
         {
-            DialogueManager.Instance.StartDialogue(FullWeddingConversation, OnWeddingDialogueFinished);
+            DialogueManager.Instance.StartDialogue(FullWeddingConversation, OnIntroWeddingDialogueFinished);
         }
     }
 
-    private void OnWeddingDialogueFinished()
+    private void OnIntroWeddingDialogueFinished()
     {
-        // maybe do final music change
+        AudioManager.PlayBackgroundMusic(MusicTracks.Wedding_Vows, 0.5f);
+
+        if (CameraController.Instance && WeddingCamVows)
+        {
+            CameraController.Instance.PushCamera(WeddingCamVows);
+        }
+        
+        // maybe wait for camera transition
+        PopulateVowsConversation();
+        
+        if (!DialogueManager.Instance)
+        {
+            Debug.LogError("No dialogue manager found");
+            OnIntroWeddingDialogueFinished();
+        }
+        else if (WeddingVowsConversation.ConversationEntries.Count == 0)
+        {
+            Debug.LogError("No wedding conversation filled");
+            OnIntroWeddingDialogueFinished();
+        }
+        else
+        {
+            DialogueManager.Instance.StartDialogue(WeddingVowsConversation, OnVowsDialogueFinished);
+        }
+    }
+
+    private void OnVowsDialogueFinished()
+    {
         if (CameraController.Instance && WeddingCamEnd)
         {
             CameraController.Instance.PushCamera(WeddingCamEnd);
         }
-        // go to game over
+        
+        // Do ending stuff here
     }
 
-    private void PopulateConversation()
+    private void PopulateIntroConversation()
     {
         FullWeddingConversation = new ConversationData();
         if (WeddingIntroConvo)
@@ -131,10 +162,14 @@ public class WeddingManager : MonoBehaviour
         {
             FullWeddingConversation.AppendConversation(DialogueHelpers.LoadConversationFromCsvString(NotAllWeddingItemsConvo.text));
         }
+    }
 
+    private void PopulateVowsConversation()
+    {
+        WeddingVowsConversation = new ConversationData();
         if (WeddingMainConvo)
         {
-            FullWeddingConversation.AppendConversation(DialogueHelpers.LoadConversationFromCsvString(WeddingMainConvo.text));
+            WeddingVowsConversation.AppendConversation(DialogueHelpers.LoadConversationFromCsvString(WeddingMainConvo.text));
         }
     }
 }

@@ -76,6 +76,7 @@ public class TrickComponent : MonoBehaviour
 
     private Animator skateboardAnimator;
     [SerializeField] private Animator playerAnimator;
+    [SerializeField] private SkateboardController skateboardController;
 
     private void Awake()
     {
@@ -148,8 +149,8 @@ public class TrickComponent : MonoBehaviour
         {
             playerAnimator.SetTrigger("Jump");
         }
-        
-        GameManager.gameManager.SetTrickText(TrickToDo.Trick.GetDisplayName(TrickToDo.TapCount), TrickToDo.Trick.GetPointValue(TrickToDo.TapCount));
+
+        GameManager.gameManager.SetTrickText(TrickToDo.Trick.GetDisplayName(TrickToDo.TapCount), TrickToDo.Trick.GetPointValue(TrickToDo.TapCount), !skateboardController.GetIsGrounded());
     }
 
 

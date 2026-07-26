@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI trickScoreText;
     public float trickTextDisplayTime = 1;
     private float trickTimer;
-    private int trickScore = 0;
+    private int pointIncrease;
 
     private void Awake()
     {
@@ -80,7 +80,7 @@ public class GameManager : MonoBehaviour
         }
 
         trickTimer = trickTextDisplayTime;
-        trickScoreText.text = "Rads: ";
+        trickScoreText.text = "";
     }
 
     private void SetupInteractInput()
@@ -191,17 +191,28 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void SetTrickText(string trickName, float pointsGained)
+    public void SetTrickText(string trickName, float pointsGained, bool combo)
     {
-        trickText.text = trickName + " +" + pointsGained;
-        trickScore += (int) pointsGained;
-        trickScoreText.text = "Rads: " + trickScore;
+        trickText.text = trickName;
+
+        if (combo)
+        {
+            pointIncrease += (int) pointsGained;
+            trickScoreText.text = "+ " + pointIncrease;
+        }
+        else
+        {
+            trickScoreText.text = "+ " + (int) pointsGained;
+        }
+
         trickTimer = trickTextDisplayTime;
     }
 
     private void ClearTrickText()
     {
         trickText.text = string.Empty;
+        trickScoreText.text = string.Empty;
+        pointIncrease = 0;
     }
 
     public void SetWaitingForTrick(bool waiting)

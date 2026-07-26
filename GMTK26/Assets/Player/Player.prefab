@@ -207,6 +207,8 @@ MonoBehaviour:
   trickInputTimeout: 0.9
   maxButtonTapGap: 0.3
   maxDirectionTapGap: 0.4
+  playerAnimator: {fileID: 0}
+  skateboardController: {fileID: 5606826914998507487}
 --- !u!114 &-3732802281748910956
 MonoBehaviour:
   m_ObjectHideFlags: 0

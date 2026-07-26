@@ -350,4 +350,9 @@ public class SkateboardController : MonoBehaviour
         currentRail = null;
         reattachTimer = grindReattachDelay;
     }
+
+    public bool GetIsGrounded()
+    {
+        return isGrounded;
+    }
 }

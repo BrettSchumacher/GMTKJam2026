@@ -15,8 +15,12 @@ MonoBehaviour:
   TrickName: 360 Flip
   InputString: 0100000001000000
   Button: 1
-  ButtonPresses: 1
-  AnimationID: 
+  AnimationID: Pop Shove-it
   PointValue: 100
   Holdable: 0
   SecretTrick: 0
+  AllowMultiTap: 0
+  multiTapOverrides: []
+  maxTaps: 3
+  lastAssetName: 360 Flip
+  lastTrickName: 360 Flip

@@ -15,8 +15,12 @@ MonoBehaviour:
   TrickName: Varial Heelflip
   InputString: 02000000
   Button: 1
-  ButtonPresses: 1
-  AnimationID: 
+  AnimationID: Heelflip
   PointValue: 100
   Holdable: 0
   SecretTrick: 0
+  AllowMultiTap: 0
+  multiTapOverrides: []
+  maxTaps: 3
+  lastAssetName: Varial Heelflip
+  lastTrickName: Varial Heelflip

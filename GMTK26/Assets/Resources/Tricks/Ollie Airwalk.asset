@@ -15,10 +15,12 @@ MonoBehaviour:
   TrickName: Ollie Airwalk
   InputString: 0300000003000000
   Button: 1
-  AnimationID: 
+  AnimationID: Kickflip
   PointValue: 110
   Holdable: 0
   SecretTrick: 0
   AllowMultiTap: 0
   multiTapOverrides: []
   maxTaps: 3
+  lastAssetName: Ollie Airwalk
+  lastTrickName: Ollie Airwalk

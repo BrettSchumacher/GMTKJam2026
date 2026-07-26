@@ -15,7 +15,7 @@ MonoBehaviour:
   TrickName: Akuma Step
   InputString: 
   Button: 4
-  AnimationID: 
+  AnimationID: Kickflip
   PointValue: 100
   Holdable: 0
   SecretTrick: 0

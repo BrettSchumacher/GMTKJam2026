@@ -36,6 +36,10 @@ public class GameManager : MonoBehaviour
     private bool IsWaitingOnTrick;
     private bool isPaused = false;
 
+    public ItemsSO testItem;
+    public ItemsSO testItem2;
+    public bool switchIem = false;
+
     private void Awake()
     {
         // Setup Game Manager singleton 
@@ -125,6 +129,19 @@ public class GameManager : MonoBehaviour
         if (interactAction.WasPressedThisFrame() && currentInteractable != null)
         {
             currentInteractable.TriggerAction();
+        }
+
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            if (switchIem)
+            {
+                tradingSystem.TradeItem(testItem2);
+            }
+            else
+            {
+                tradingSystem.TradeItem(testItem);
+                switchIem = true;
+            }
         }
     }
 

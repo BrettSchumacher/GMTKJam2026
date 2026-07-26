@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3152982928357982287}
   - component: {fileID: 4164694638417080970}
   - component: {fileID: 2957336732472756972}
+  - component: {fileID: 7305611531983869567}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -55,11 +56,14 @@ MonoBehaviour:
   HUD: {fileID: 2204643917669419660}
   countdownTimerText: {fileID: 1948118292248608448}
   itemsListText: {fileID: 4252405924511284618}
-  currentTradeItemText: {fileID: 7089542768936152442}
+  currentTradeItemText: {fileID: 1793964633723309512}
   TrickTutorialText: {fileID: 6267403758723365953}
   numPeopleToInviteText: {fileID: 2951043016934648349}
   interactHudObj: {fileID: 5520903016578244148}
   interactText: {fileID: 9014552545570448109}
+  testItem: {fileID: 0}
+  testItem2: {fileID: 0}
+  switchIem: 0
 --- !u!114 &3152982928357982287
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -131,6 +135,22 @@ MonoBehaviour:
   m_CameraActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &7305611531983869567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 807085426159750046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c2e4e6d59b2679409956411f4a67b3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textObj: {fileID: 7089542768936152442}
+  currentMoney: 1000
+  currencyCounterAnimationFrameRate: 30
+  currencyCounterAnimationMaxDuration: 5
 --- !u!1 &1766033737131950678
 GameObject:
   m_ObjectHideFlags: 0
@@ -490,6 +510,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cb6fb9101a89a4547a368529adb7c648, type: 3}
+--- !u!114 &1793964633723309512 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5737474745596293770, guid: cb6fb9101a89a4547a368529adb7c648, type: 3}
+  m_PrefabInstance: {fileID: 6303609793961246530}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1948118292248608448 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5509011709870768514, guid: cb6fb9101a89a4547a368529adb7c648, type: 3}

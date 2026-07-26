@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class IntroManager : MonoBehaviour
 {
@@ -23,6 +24,12 @@ public class IntroManager : MonoBehaviour
     private AudioSource broadcastSource;
     private InputAction skipInputAction;
 
+    public Image broadcastImage;
+    public float fadeInDelay = 0.3f;
+    public float fadeOutDelay = 0.75f;
+    private bool fadeIn = false;
+    private bool fadeOut = false;
+
     private void Awake()
     {
         if (Instance)
@@ -32,6 +39,18 @@ public class IntroManager : MonoBehaviour
         }
 
         Instance = this;
+    }
+
+    private void Update()
+    {
+        if (fadeIn)
+        {
+            broadcastImage.CrossFadeAlpha(1.0f, fadeInDelay, false);
+        }
+        if (fadeOut)
+        {
+            broadcastImage.CrossFadeAlpha(0.0f, fadeOutDelay, false);
+        }
     }
 
     public void StartIntro()
@@ -183,6 +202,7 @@ public class IntroManager : MonoBehaviour
         yield return new WaitForSeconds(delay);
         
         callback?.Invoke();
+        fadeIn = true;
     }
 
     IEnumerator PlaySirens(bool isIntro, Action callback)

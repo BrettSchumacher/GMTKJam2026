@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -29,6 +30,8 @@ public class TypewriterEffect : MonoBehaviour
 	Coroutine typewriterCoroutine;
 	Coroutine timeWaserCoroutine;
 
+	private Action OnCompletedCallback;
+
 	// Use this for initialization
 	void Start()
 	{
@@ -45,21 +48,25 @@ public class TypewriterEffect : MonoBehaviour
 		fromDM = false;
 	}
 
-    public void NewText(string newText)
+    public void NewText(string newText, Action completedCallback)
     {
-		_tmpProText = GetComponent<TMP_Text>()!;
-		currentText = ManualTextWrapping(newText, _tmpProText.font, _tmpProText.fontSize, _tmpProText.fontStyle);
+	    StopAllCoroutines();
+		_tmpProText ??= GetComponent<TMP_Text>()!;
+		currentText = newText; // ManualTextWrapping(newText, _tmpProText.font, _tmpProText.fontSize, _tmpProText.fontStyle);
+		OnCompletedCallback = completedCallback;
 		writer = currentText;
 		_tmpProText.text = "";
         // if (fromDM) { DialogueManager.newDialogueStarted = true; }
-		Keyboard.current.onTextInput += SkipText;
 		typewriterCoroutine = StartCoroutine("TypeWriterTMP");
 	}
 
-	private void OnDestroy()
-	{
-		Keyboard.current.onTextInput -= SkipText;
-	}
+    private void FinishText()
+    {
+	    StopAllCoroutines();
+	    typewriterCoroutine = null;
+	    timeWaserCoroutine = null;
+	    OnCompletedCallback?.Invoke();
+    }
 
 	public void ChangeSoundSettings(AudioClip newSpeechSound, float newSpeechVolume, float newSpeechPitch, float newSpeechPitchRandomizationRange)
     {
@@ -69,7 +76,7 @@ public class TypewriterEffect : MonoBehaviour
 		speechPitchRandomizationRange = newSpeechPitchRandomizationRange;
 	}
 
-	public void SkipText(char ch)
+	public void SkipText(char ch = ' ')
     {
 		if (skippable)
 		{
@@ -87,6 +94,7 @@ public class TypewriterEffect : MonoBehaviour
 			{
 				Keyboard.current.onTextInput -= SkipText;
 				_tmpProText.text = currentText;
+				FinishText();
 			}
 		}
 	}
@@ -147,18 +155,18 @@ public class TypewriterEffect : MonoBehaviour
 
 		yield return new WaitForSeconds(delayAfterEnd);
 		// if (fromDM) { DialogueManager.newDialogueStarted = false; }
-		Keyboard.current.onTextInput -= SkipText;
 
 		typewriterCoroutine = null;
+		FinishText();
 	}
 	IEnumerator TimeWaster()
 	{
-		Keyboard.current.onTextInput -= SkipText;
 		_tmpProText.text = currentText;
 		yield return new WaitForSeconds(delayAfterEnd);
 		// if (fromDM) { DialogueManager.newDialogueStarted = false; }
 
 		timeWaserCoroutine = null;
+		FinishText();
 	}
 
 
@@ -170,7 +178,7 @@ public class TypewriterEffect : MonoBehaviour
 
 		float styleSpacingAdjustment = (style & FontStyles.Bold) == FontStyles.Bold ? fontAsset.boldSpacing : 0;
 		float normalSpacingAdjustment = fontAsset.normalSpacingOffset;
-		float tempNewlineWidthLimit = forceNewlineWidth;
+		float tempNewlineWidthLimit = _tmpProText.rectTransform.rect.width - _tmpProText.margin.x - _tmpProText.margin.z; // forceNewlineWidth
 		float width = _tmpProText.margin.x + _tmpProText.margin.z;
 		bool skipCharacters = false;
 		string currentVal = "";

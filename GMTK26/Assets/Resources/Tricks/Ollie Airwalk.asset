@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 726ab84112e82b8449af5802c21ece67, type: 3}
+  m_Name: Ollie Airwalk
+  m_EditorClassIdentifier: 
+  TrickName: Ollie Airwalk
+  InputString: 0300000003000000
+  Button: 1
+  AnimationID: 
+  PointValue: 110
+  Holdable: 0
+  SecretTrick: 0
+  AllowMultiTap: 0
+  multiTapOverrides: []
+  maxTaps: 3

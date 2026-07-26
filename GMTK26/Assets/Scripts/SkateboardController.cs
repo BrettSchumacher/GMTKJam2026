@@ -57,6 +57,12 @@ public class SkateboardController : MonoBehaviour
     public float grindReattachDelay = 0.3f;
     public float grindTurnSpeed = 8f;
 
+    [Header("Dampening")]
+    public float dampenDecaySpeed = 5f;
+    public float dampenTimeout = 0.1f;
+    [Range(0f, 1f)]
+    public float dampenedSpeedFactor = 0.2f;
+
     public CameraShake cameraShake;
 
     CharacterController controller;
@@ -76,6 +82,10 @@ public class SkateboardController : MonoBehaviour
     float railDistance;
     float grindSpeed;
     float reattachTimer;
+    float dampener;
+    float lastDampenValue;
+    float lastDampenRequestTime = float.NegativeInfinity;
+    Vector3 lastDampenSourcePosition;
 
     void Start()
     {
@@ -88,6 +98,21 @@ public class SkateboardController : MonoBehaviour
 
     void Update()
     {
+        bool requestIsFresh = Time.time - lastDampenRequestTime <= dampenTimeout;
+        float rawDampen = requestIsFresh ? lastDampenValue : 0f;
+
+        Vector3 towardSource = lastDampenSourcePosition - transform.position;
+        towardSource.y = 0f;
+
+        float directionFactor = 1f;
+        if (velocity.sqrMagnitude > 0.01f && towardSource.sqrMagnitude > 0.01f)
+        {
+            directionFactor = Mathf.Clamp01(Vector3.Dot(velocity.normalized, towardSource.normalized));
+        }
+
+        float target = rawDampen * directionFactor;
+        dampener = Mathf.MoveTowards(dampener, target, dampenDecaySpeed * Time.deltaTime);
+
         Vector2 input = movementAction.ReadValue<Vector2>();
         if (jumpAction.WasPressedThisFrame())
         {
@@ -163,11 +188,26 @@ public class SkateboardController : MonoBehaviour
             velocity = carved;
         }
 
-        Vector3 horizontal = Vector3.ClampMagnitude(new Vector3(velocity.x, 0f, velocity.z), maxSpeed);
+        float effectiveMaxSpeed = Mathf.Lerp(maxSpeed, maxSpeed * dampenedSpeedFactor, dampener);
+        Vector3 horizontal = Vector3.ClampMagnitude(new Vector3(velocity.x, 0f, velocity.z), effectiveMaxSpeed);
         velocity.x = horizontal.x;
         velocity.z = horizontal.z;
 
         if (jumpQueued) velocity.y += jumpForce;
+    }
+
+    public void RequestDampen(float amount, Vector3 sourcePosition)
+    {
+        float clamped = Mathf.Clamp01(amount);
+        bool stillFresh = Time.time - lastDampenRequestTime <= dampenTimeout;
+        
+        if (!stillFresh || clamped >= lastDampenValue)
+        {
+            lastDampenValue = clamped;
+            lastDampenSourcePosition = sourcePosition;
+        }
+
+        lastDampenRequestTime = Time.time;
     }
 
     void CheckGround()

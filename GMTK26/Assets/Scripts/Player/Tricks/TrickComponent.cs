@@ -75,6 +75,7 @@ public class TrickComponent : MonoBehaviour
     private InputAction grindAction;
 
     private Animator skateboardAnimator;
+    [SerializeField] private Animator playerAnimator;
 
     private void Awake()
     {
@@ -143,6 +144,11 @@ public class TrickComponent : MonoBehaviour
         Debug.Log($"Did a {TrickToDo.Trick.GetDisplayName(TrickToDo.TapCount)} (AnimID: {TrickToDo.Trick.GetAnimationID(TrickToDo.TapCount)}, Points: {TrickToDo.Trick.GetPointValue(TrickToDo.TapCount)}");
 
         skateboardAnimator.Play(TrickToDo.Trick.AnimationID, 0, 0f);
+        if (!playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Armature|Jump_remap_002"))
+        {
+            playerAnimator.SetTrigger("Jump");
+        }
+        
         GameManager.gameManager.SetTrickText(TrickToDo.Trick.GetDisplayName(TrickToDo.TapCount), TrickToDo.Trick.GetPointValue(TrickToDo.TapCount));
     }
 

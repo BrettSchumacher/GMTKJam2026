@@ -1,9 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
+using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -60,14 +61,7 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         countdownTimer -= Time.deltaTime;
-        if (countdownTimer < 60f)
-        {
-            countdownTimerText.text = Mathf.CeilToInt(countdownTimer) + " s";
-        }
-        else
-        {
-            countdownTimerText.text = Mathf.CeilToInt(countdownTimer / 60) + " min";
-        }
+        countdownTimerText.text = String.Format("{0:00}",(Mathf.CeilToInt(countdownTimer / 60) - 1)) + ":" + String.Format("{0:00}", (Mathf.CeilToInt(countdownTimer % 60) - 1));
 
         if (countdownTimer <= 0f)
         {

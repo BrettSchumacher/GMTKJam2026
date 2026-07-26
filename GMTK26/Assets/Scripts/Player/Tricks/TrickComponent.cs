@@ -137,6 +137,11 @@ public class TrickComponent : MonoBehaviour
     //This should really be an event tbh
     public void ExecuteTrick(TrickMatch TrickToDo)
     {
+        if (skateboardController.GetIsGrounded())
+        {
+            return;
+        }
+
         if (PlayerManager.Instance)
         {
             PlayerManager.Instance.HandleTrickCompleted();
@@ -150,7 +155,7 @@ public class TrickComponent : MonoBehaviour
             playerAnimator.SetTrigger("Jump");
         }
 
-        GameManager.gameManager.SetTrickText(TrickToDo.Trick.GetDisplayName(TrickToDo.TapCount), TrickToDo.Trick.GetPointValue(TrickToDo.TapCount), !skateboardController.GetIsGrounded());
+        GameManager.gameManager.SetTrickText(TrickToDo.Trick.GetDisplayName(TrickToDo.TapCount), TrickToDo.Trick.GetPointValue(TrickToDo.TapCount));
     }
 
 

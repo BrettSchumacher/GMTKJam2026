@@ -191,19 +191,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void SetTrickText(string trickName, float pointsGained, bool combo)
+    public void SetTrickText(string trickName, float pointsGained)
     {
         trickText.text = trickName;
 
-        if (combo)
-        {
-            pointIncrease += (int) pointsGained;
-            trickScoreText.text = "+ " + pointIncrease;
-        }
-        else
-        {
-            trickScoreText.text = "+ " + (int) pointsGained;
-        }
+        pointIncrease += (int) pointsGained;
+        trickScoreText.text = "+ " + pointIncrease;
 
         trickTimer = trickTextDisplayTime;
     }

@@ -57,6 +57,11 @@ public class PlaySkateboardSound : MonoBehaviour
             movementAudio.Play();
         }
 
+        if (!skateboard.GetIsGrounded())
+        {
+            movementAudio.Stop();
+        }
+
 
     }
 }

@@ -8,6 +8,7 @@ public class SkateboardController : MonoBehaviour
     public float maxSpeed = 10f;
 
     [Header("Turning")]
+    public float turnAcceleration = 1f;
     public float turnSpeed = 180f;
     [Range(0f, 1f)]
     public float minTurnSpeedFactor = 0.25f;
@@ -76,7 +77,7 @@ public class SkateboardController : MonoBehaviour
     bool wasGrounded;
     bool jumpQueued;
     Vector3 groundNormal = Vector3.up;
-    float lastTurnAmount;
+    float currentTurnSpeed = 0f;
     bool isGrinding;
     GrindRail currentRail;
     float railDistance;
@@ -160,10 +161,13 @@ public class SkateboardController : MonoBehaviour
     {
         float speedFactor = Mathf.Clamp01(velocity.magnitude / maxSpeed);
         float turnFactor = Mathf.Lerp(minTurnSpeedFactor, 1f, speedFactor);
-        float turnAmount = input.x * turnFactor;
-        transform.Rotate(Vector3.up, turnAmount * turnSpeed * Time.deltaTime, Space.Self);
-
-        lastTurnAmount = turnAmount;
+        float goalTurnSpeed = input.x * turnFactor * turnSpeed;
+        float currentMaxAcceleration = turnAcceleration * turnFactor;
+        float currentAcceleration = currentMaxAcceleration * (goalTurnSpeed - currentTurnSpeed) / turnSpeed;
+        currentAcceleration = Mathf.Clamp(currentAcceleration, -currentMaxAcceleration, currentMaxAcceleration);
+        currentTurnSpeed += currentAcceleration * Time.deltaTime;
+        currentTurnSpeed = Mathf.Clamp(currentTurnSpeed, -turnSpeed, turnSpeed);
+        transform.Rotate(Vector3.up, currentTurnSpeed * Time.deltaTime, Space.Self);
     }
 
     void HandleGroundedMovement(Vector2 input)
@@ -252,14 +256,17 @@ public class SkateboardController : MonoBehaviour
 
         if (!isGrinding)
         {
-            Quaternion leanRotation = Quaternion.Euler(0f, 0f, -lastTurnAmount * maxTurnLean);
+            Quaternion leanRotation = Quaternion.Euler(0f, 0f, -currentTurnSpeed / turnSpeed * maxTurnLean);
             targetLocalTilt *= leanRotation;
+
+            Vector3 targetForward = transform.forward;
+            targetForward.y = 0;
+            Quaternion targetRotation = Quaternion.LookRotation(targetForward.normalized);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, tiltSpeed * Time.deltaTime);
         }
         
         bool justLanded = isGrounded && !wasGrounded;
-        visualMesh.localRotation = justLanded
-            ? targetLocalTilt
-            : Quaternion.Slerp(visualMesh.localRotation, targetLocalTilt, tiltSpeed * Time.deltaTime);
+        visualMesh.localRotation = Quaternion.Slerp(visualMesh.localRotation, targetLocalTilt, tiltSpeed * Time.deltaTime);
 
         wasGrounded = isGrounded;
     }
@@ -314,8 +321,8 @@ public class SkateboardController : MonoBehaviour
         currentRail = rail;
         railDistance = distanceAlongRail;
 
-        Vector3 facing = grindSpeed >= 0f ? tangent : -tangent;
-        transform.rotation = Quaternion.LookRotation(facing, Vector3.up);
+        // Vector3 facing = grindSpeed >= 0f ? tangent : -tangent;
+        // transform.rotation = Quaternion.LookRotation(facing, Vector3.up);
     }
 
     void HandleGrinding()
@@ -338,7 +345,7 @@ public class SkateboardController : MonoBehaviour
         Vector3 targetPosition = currentRail.getPointAtDistance(railDistance, out Vector3 tangent);
         controller.Move(targetPosition - transform.position);
         Vector3 facing = grindSpeed >= 0f ? tangent : -tangent;
-        Quaternion targetRotation = Quaternion.LookRotation(facing, Vector3.up);
+        Quaternion targetRotation = Quaternion.LookRotation(facing);
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, grindTurnSpeed * Time.deltaTime);
     }
 

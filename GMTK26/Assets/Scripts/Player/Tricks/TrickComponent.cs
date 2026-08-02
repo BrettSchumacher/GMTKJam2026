@@ -74,7 +74,7 @@ public class TrickComponent : MonoBehaviour
     private InputAction flipAction;
     private InputAction grindAction;
 
-    private Animator skateboardAnimator;
+    public Animator skateboardAnimator;
     [SerializeField] private Animator playerAnimator;
     [SerializeField] private SkateboardController skateboardController;
 
@@ -85,7 +85,7 @@ public class TrickComponent : MonoBehaviour
 
     private void Start()
     {
-        skateboardAnimator = GetComponent<Animator>();
+        // skateboardAnimator = GetComponent<Animator>();
     }
 
     private void OnEnable()
